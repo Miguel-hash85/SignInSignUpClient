@@ -5,8 +5,12 @@
  */
 package view;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -49,6 +53,7 @@ public class SignedInController {
         stage.setScene(scene);
         btnExit.setOnAction(this::close);
         menuExit.setOnAction(this::close);
+        menuLogOut.setOnAction(this::logOut);
         stage.show();
     }
 
@@ -59,5 +64,20 @@ public class SignedInController {
     }
     public void close(ActionEvent action){
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+    }
+    
+    public void logOut(ActionEvent action){
+         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignInWindow.fxml"));
+         Stage stageSignIn=new Stage();
+         try {
+            Parent root = (Parent) loader.load();         
+            SignedInController controller = loader.getController();
+            controller.setLabelText();
+            controller.setStage(stageSignIn);
+            controller.initStage(root);
+        } catch (IOException ex) {
+            Logger.getLogger(SignedInWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
