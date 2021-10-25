@@ -5,8 +5,7 @@
  */
 package view;
 
-import java.awt.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -47,6 +47,8 @@ public class SignedInController {
     public void initStage(Parent root){
         Scene scene=new Scene(root);
         stage.setScene(scene);
+        btnExit.setOnAction(this::close);
+        menuExit.setOnAction(this::close);
         stage.show();
     }
 
@@ -54,5 +56,8 @@ public class SignedInController {
         lblEmail.setText("aitorruizdegauna@gmail.com");
         lblLogin.setText("Aitorrdg");
         lblFullName.setText("Aitor Ruiz de Gauna");
+    }
+    public void close(ActionEvent action){
+        stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 }
