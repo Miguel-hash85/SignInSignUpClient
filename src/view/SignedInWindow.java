@@ -20,7 +20,6 @@ import javafx.stage.Stage;
  */
 public class SignedInWindow extends Application {
 
-    
     private User user;
 
     /**
@@ -30,11 +29,16 @@ public class SignedInWindow extends Application {
     @Override
     public void start(Stage primaryStage) {
         // logger.info("Initializing SignedIn Stage");
+        User u = new User();
+        u.setEmail("aitorruizdegauna@gmail.com");
+        u.setFullname("Aitor Ruiz de Gauna");
+        u.setLogin("Aitorrdg");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignedInWindow.fxml"));
         try {
 
-            Parent root = (Parent) loader.load();         
+            Parent root = (Parent) loader.load();
             SignedInController controller = loader.getController();
+            controller.setUser(u);
             controller.setLabelText();
             controller.setStage(primaryStage);
             controller.initStage(root);
