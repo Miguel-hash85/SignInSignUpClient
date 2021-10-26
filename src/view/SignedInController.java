@@ -5,6 +5,7 @@
  */
 package view;
 
+import classes.User;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +45,7 @@ public class SignedInController {
     @FXML
     private MenuItem menuExit;
     private Stage stage;
+    private User user;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -57,10 +59,19 @@ public class SignedInController {
         stage.show();
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+    
     public void setLabelText() {
-        lblEmail.setText("aitorruizdegauna@gmail.com");
-        lblLogin.setText("Aitorrdg");
-        lblFullName.setText("Aitor Ruiz de Gauna");
+        lblEmail.setText(user.getEmail());
+        lblLogin.setText(user.getLogin());
+        lblFullName.setText(user.getFullname());
     }
     public void close(ActionEvent action){
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
