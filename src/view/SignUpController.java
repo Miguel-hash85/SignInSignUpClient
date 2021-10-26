@@ -8,6 +8,7 @@ package view;
 import classes.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,7 +16,6 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -65,9 +65,19 @@ public class SignUpController {
     public void initStage(Parent root){
         //stage.initModality(Modality.APPLICATION_MODAL); 
         Scene scene=new Scene(root);
+        stage.setResizable(false);
         stage.setScene(scene);
         hypLogIn.setOnAction(this::signIn);
+        btnSignUp.setOnAction(this::signUp);
         stage.show();
+    }
+    
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setStage(Stage stage) {
@@ -76,6 +86,14 @@ public class SignUpController {
     
     public void signIn(ActionEvent action){
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+    }
+    
+    public void signUp(ActionEvent action){
+        
+        stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignedInWindow.fxml"));
+        Stage stageSignIn=new Stage();
+        
     }
     
 }
