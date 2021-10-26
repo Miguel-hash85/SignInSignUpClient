@@ -26,7 +26,6 @@ import javafx.stage.WindowEvent;
  */
 public class SignedInController {
     //Label that is associated to the label 'lblEmail' of the SignedInWindow.fxml
-
     @FXML
     private Label lblEmail;
     //Label that is associated to the label 'lblFullName' of the SignedInWindow.fxml
@@ -46,10 +45,17 @@ public class SignedInController {
     private MenuItem menuExit;
     private Stage stage;
     private User user;
-
+    /**
+     * Method that assign the value of the stage received to the class stage.
+     * @param stage 
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+    /**
+     * Method that receive a Parent and initialize the stage
+     * @param root 
+     */
     public void initStage(Parent root){
         Scene scene=new Scene(root);
         stage.setScene(scene);
@@ -58,25 +64,39 @@ public class SignedInController {
         menuLogOut.setOnAction(this::logOut);
         stage.show();
     }
-
+    /**
+     * Method that return the value of the user.
+     * @return User
+     */
     public User getUser() {
         return user;
     }
-
+    /**
+     * Method that assign the value of the user received to the class user.
+     * @param user 
+     */
     public void setUser(User user) {
         this.user = user;
     }
-    
-    
+    /**
+     * Method that set the text of the labels.
+     */
     public void setLabelText() {
         lblEmail.setText(user.getEmail());
         lblLogin.setText(user.getLogin());
         lblFullName.setText(user.getFullname());
     }
+    /**
+     * Method that close the window.
+     * @param action 
+     */
     public void close(ActionEvent action){
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
-    
+    /**
+     * Method tha close this stage and opens the SignInWindow.
+     * @param action 
+     */
     public void logOut(ActionEvent action){
          stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
          FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignInWindow.fxml"));
