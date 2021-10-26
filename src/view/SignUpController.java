@@ -8,14 +8,13 @@ package view;
 import classes.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -75,8 +74,14 @@ public class SignUpController {
         lblEmailMax.setVisible(false);
         lblLoginMax.setVisible(false);
         lblPasswordMax.setVisible(false);
+        btnSignUp.setDisable(true);
         hypLogIn.setOnAction(this::signIn);
         btnSignUp.setOnAction(this::signUp);
+        txtFullName.textProperty().addListener(this::textChanged);
+        txtEmail.textProperty().addListener(this::textChanged);
+        txtLogin.textProperty().addListener(this::textChanged);
+        pswPassword.textProperty().addListener(this::textChanged);
+        pswRepeatPassword.textProperty().addListener(this::textChanged);
         stage.show();
     }
 
@@ -98,32 +103,60 @@ public class SignUpController {
 
     public void signUp(ActionEvent action) {
         try {
-            fullNameValidation();
+            Validation();
             stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignedInWindow.fxml"));
             Stage stageSignIn = new Stage();
         } catch (Exception ex) {
-            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
+            btnSignUp.setDisable(true);
+            if (ex.getMessage().equalsIgnoreCase("Error,Email not valid!")) {
+                lblEmailMax.setVisible(true);
+                txtEmail.requestFocus();
+            }else if (ex.getMessage().equalsIgnoreCase("Error,Password does not match!")){
+                lblPasswordMax.setVisible(true);
+                pswPassword.requestFocus();
+            }
+
         }
 
     }
 
-    private void fullNameValidation() throws Exception {
-        if (txtFullName.getText().length() >= 255) {
-            throw new Exception("Maximum character limit reached!");
-        } else if (txtFullName.getText().trim().isEmpty()) {
-            throw new Exception("Empty Full Name field!");
+    private void Validation() throws Exception {
+        //Username
+
+        //Email
+        if (!txtEmail.getText().matches("[A-Za-z0-9._%+-]+@[a-z0-9.-]+.com")) {
+            lblEmailMax.setText("Error,Email not valid!");
+            throw new Exception("Error,Email not valid!");
+        }
+        //Password
+        if (!pswRepeatPassword.getText().equalsIgnoreCase(pswPassword.getText())) {
+            lblPasswordMax.setText("Error,Password does not match!");
+            throw new Exception("Error,Password does not match!");
         }
     }
 
-    private void emailValidation() throws Exception {
-        if (txtFullName.getText().trim().isEmpty()) {
-            throw new Exception("Empty Email field!");
-        } else if (txtEmail.getText().length() >= 255) {
-            throw new Exception("Maximum character limit reached!");
-        } else if (!txtEmail.getText().matches("[A-Za-z0-9._%+-]+@[A-Z0-9.-]+[a-z]+.com")) {
-            throw new Exception("Error, Email not valid!");
+    public void textChanged(ObservableValue observable, Object oldValue, Object newValue) {
+        if (!txtEmail.getText().trim().equals("") && !txtFullName.getText().trim().equals("")
+                && !txtLogin.getText().trim().equals("") && !pswPassword.getText().trim().equals("")
+                && !pswRepeatPassword.getText().trim().equals("")) {
+            btnSignUp.setDisable(false);
+        } else {
+            btnSignUp.setDisable(true);
         }
+        characterLimitArrived(txtEmail.getText(), lblEmailMax);
+        characterLimitArrived(txtFullName.getText(), lblFullNameMax);
+        characterLimitArrived(txtLogin.getText(), lblLoginMax);
+        characterLimitArrived(pswPassword.getText(), lblPasswordMax);
+        characterLimitArrived(pswRepeatPassword.getText(), lblPasswordMax);
+    }
 
+    private void characterLimitArrived(String string, Label label) {
+        if (string.length() > 255) {
+            label.setVisible(true);
+            btnSignUp.setDisable(true);
+        } else {
+            label.setVisible(false);
+        }
     }
 }
