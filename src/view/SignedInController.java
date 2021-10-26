@@ -58,9 +58,10 @@ public class SignedInController {
      * Method that receive a Parent and initialize the stage
      * @param root 
      */
-    public void initStage(Parent root){
+    public void initStage(Parent root){   
         Scene scene=new Scene(root);
         stage.setScene(scene);
+        stage.setResizable(false);
         btnExit.setOnAction(this::close);
         menuExit.setOnAction(this::close);
         menuLogOut.setOnAction(this::logOut);
