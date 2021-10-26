@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="960.0" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-color: black;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignUpController">
+    <children>
+        <VBox layoutX="235.0" layoutY="132.0" prefHeight="450.0" prefWidth="508.0" style="-fx-background-color: gr;">
+            <children>
+                <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="608.0" prefWidth="508.0" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Label layoutX="22.0" layoutY="11.0" text="PERSONAL INFO:" />
+                        <Label layoutX="22.0" layoutY="183.0" text="SET USER:" />
+                        <Button fx:id="btnSignUp" layoutX="405.0" layoutY="394.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="82.0" text="SignUP" />
+                        <Hyperlink fx:id="hypLogIn" layoutX="22.0" layoutY="392.0" prefHeight="23.0" prefWidth="127.0" text="I prefer to login">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Hyperlink>
+                        <Pane layoutX="21.0" layoutY="35.0" prefHeight="140.0" prefWidth="466.0" style="-fx-border-style: solid;">
+                            <children>
+                                <TextField fx:id="txtFullName" layoutX="9.0" layoutY="33.0" prefHeight="26.0" prefWidth="445.0">
+                                    <tooltip>
+                                        <Tooltip text="ENTER YOUR NAME AND SURNAMES" />
+                                    </tooltip>
+                                </TextField>
+                                <Label layoutX="8.0" layoutY="16.0" text="FULL NAME:"/>
+                                <TextField fx:id="txtEmail" layoutX="8.0" layoutY="94.0" prefHeight="26.0" prefWidth="445.0" >
+                                    <tooltip>
+                                        <Tooltip text="ENTER YOUR EMAIL" />
+                                    </tooltip>
+                                </TextField>
+                                <Label layoutX="9.0" layoutY="76.0" text="EMAIL:" />
+                                <Label fx:id="lblFullNameMax" layoutX="299.0" layoutY="17.0" prefHeight="15.0" prefWidth="151.0" text="Maximum character limit reached!" textFill="RED">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblEmailMax" layoutX="299.0" layoutY="77.0" text="Maximum character limit reached!" textFill="RED">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </Pane>
+                        <Pane layoutX="21.0" layoutY="208.0" prefHeight="172.0" prefWidth="466.0" style="-fx-border-style: solid;" />
+                        <Label layoutX="32.0" layoutY="296.0" text="PASSWORD:" />
+                        <Label layoutX="251.0" layoutY="296.0" text="REPEAT PASSWORD:" />
+                        <TextField fx:id="txtLogin" layoutX="31.0" layoutY="241.0" prefHeight="25.0" prefWidth="212.0" >
+                            <tooltip>
+                                <Tooltip text="ENTER YOUR USERNAME" />
+                            </tooltip>
+                        </TextField>
+                        <Label layoutX="30.0" layoutY="223.0" text="USERNAME:" />
+                        <PasswordField fx:id="pswPassword" layoutX="31.0" layoutY="314.0" prefHeight="25.0" prefWidth="212.0" >
+                            <tooltip>
+                                <Tooltip text="ENTER YOUR PASSWORD" />
+                            </tooltip>
+                        </PasswordField>
+                        <PasswordField fx:id="pswRepeatPassword" layoutX="250.0" layoutY="314.0" prefHeight="25.0" prefWidth="223.0" >
+                            <tooltip>
+                                <Tooltip text="REPEAT YOUR PASSWORD" />
+                            </tooltip>
+                        </PasswordField>
+                        <Label fx:id="lblLoginMax" layoutX="31.0" layoutY="267.0" text="Maximum character limit reached!" textFill="RED">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="lblPasswordMax" layoutX="35.0" layoutY="340.0" prefHeight="15.0" prefWidth="237.0" text="Maximum character limit reached!" textFill="RED">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+            </children>
+        </VBox>
+    </children>
+</Pane>
