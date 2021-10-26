@@ -68,7 +68,7 @@ public class SignInController {
         btnSignIn.setDisable(true);
         btnExit.setOnAction(this::close);
         //btnSignIn.setOnAction(this::signIn);
-        // txtUserName.textProperty().addListener((observable, oldvalue, newvalue),this::characterLimitArrived);
+       // txtUserName.textProperty().addListener((observable, oldvalue, newvalue),this::characterLimitArrived);
         lblPasswdMax.setVisible(false);
         lblUserMax.setVisible(false);
         stage.show();
