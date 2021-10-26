@@ -20,8 +20,6 @@ import javafx.stage.Stage;
  */
 public class SignedInWindow extends Application {
 
-    private User user;
-
     /**
      *
      * @param primaryStage
