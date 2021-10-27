@@ -6,6 +6,9 @@
 package view;
 
 import classes.User;
+import exceptions.UserNotFoundException;
+import exceptions.ConnectionRefusedException;
+import exceptions.IncorrectPasswordException;
 import interfaces.Signable;
 import java.io.IOException;
 import javafx.beans.value.ObservableValue;
@@ -51,16 +54,15 @@ public class SignInController {
     //lablel that will be visible if user reached to max character limit for username
     @FXML
     private Label lblUserMax;
-
+    // Stage that will be used to initiate other windows
     private Stage stage;
     private User user;
     private Signable signable;
+    private SignableFactory signableFactory;
 
     void setStage(Stage primaryStage) {
         this.stage = primaryStage;
     }
-    
-    
 
     void initStage(Parent root) {
         Scene scene = new Scene(root);
@@ -72,7 +74,7 @@ public class SignInController {
         btnSignIn.setOnAction(this::signIn);
         txtUserName.textProperty().addListener(this::textChanged);
         txtPasswd.textProperty().addListener(this::textChanged);
-       // signUpLink.setOnAction(this::signUp);
+        // signUpLink.setOnAction(this::signUp);
         lblPasswdMax.setVisible(false);
         lblUserMax.setVisible(false);
         stage.show();
@@ -86,7 +88,7 @@ public class SignInController {
     public void close(ActionEvent action) {
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
-    
+
     /**
      *
      * @param observable
@@ -99,10 +101,10 @@ public class SignInController {
         } else {
             btnSignIn.setDisable(true);
         }
-        characterLimitArrived(txtPasswd,lblPasswdMax);
-        characterLimitArrived(txtUserName,lblUserMax);
+        characterLimitArrived(txtPasswd, lblPasswdMax);
+        characterLimitArrived(txtUserName, lblUserMax);
     }
-    
+
     /**
      *
      * @param action
@@ -111,33 +113,65 @@ public class SignInController {
         User userSignedIn = new User();
         user.setLogin(txtUserName.getText());
         user.setPassword(txtPasswd.getText());
-       //userSignedIn=signIn(user);
+        try {
+            signable = signableFactory.getSignableImplementation();
+            userSignedIn = signable.signIn(user);
+            sendUser(userSignedIn);
+            stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        } catch (UserNotFoundException userNotFound) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, userNotFound.getErrorMessage(), ButtonType.OK);
+            alert.show();
+        } catch (IncorrectPasswordException passwordError) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, passwordError.getErrorMessage(), ButtonType.OK);
+            alert.show();
+        } catch (ConnectionRefusedException connectionError) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, connectionError.getErrorMessage(), ButtonType.OK);
+            alert.show();
+        }
+
     }
 
     /**
      *
      * @param action
      */
-    public void signUp(ActionEvent action){
+    public void signUp(ActionEvent action) {
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_SHOWING));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignInWindow.fxml"));
-        Stage stageSignIn=new Stage();
-         try {
-            Parent root = (Parent) loader.load();         
-           SignUpController controller = loader.getController();
-            controller.setLabelText();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignUpWindow.fxml"));
+        Stage stageSignIn = new Stage();
+        try {
+            Parent root = (Parent) loader.load();
+            SignUpController controller = loader.getController();
+            controller.setSignable(signableFactory.getSignableImplementation);
             controller.setStage(stageSignIn);
             controller.initStage(root);
         } catch (IOException ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR,"ERROR WHILE SIGNING UP",ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.ERROR, "ERROR WHILE SIGNING UP", ButtonType.OK);
         }
     }
-    private void characterLimitArrived(TextField textField, Label label){
-         if (textField.getText().length() > 255) {
+
+    private void characterLimitArrived(TextField textField, Label label) {
+        if (textField.getText().length() > 255) {
             label.setVisible(true);
             btnSignIn.setDisable(true);
         } else {
             label.setVisible(false);
+        }
+    }
+
+    private void sendUser(User user) {
+        stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_SHOWING));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignedInWindow.fxml"));
+        Stage stageSignIn = new Stage();
+        try {
+            Parent root = (Parent) loader.load();
+            SignUpController controller = loader.getController();
+            controller.setLabelText();
+            controller.setStage(stageSignIn);
+            controller.setUser(user);
+            controller.initStage(root);
+        } catch (IOException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "ERROR WHILE SIGNING UP", ButtonType.OK);
         }
     }
 }
