@@ -125,22 +125,16 @@ public class SignUpController {
     public void signUp(ActionEvent action) {
         try {
             Validation();
-            user.setFullname(txtFullName.getText());
-            user.setEmail(txtEmail.getText());
-            user.setLogin(txtLogin.getText());
-            user.setPassword(pswPassword.getText());
-            user.setLastPasswordChange(LocalDateTime.now());
-            user.setPrivilege(UserPrivilege.USER);
-            user.setStatus(UserStatus.ENABLED);
+            setUserInfo();
             signable.signUp(user);
             stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignedInWindow.fxml"));
             Stage stageSignIn = new Stage();
         } catch (UserAlreadyExistException aex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR,aex.getErrorMessage(),ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.ERROR, aex.getErrorMessage(), ButtonType.OK);
             alert.show();
-        } catch(ConnectionRefusedException cex){
-            Alert alert = new Alert(Alert.AlertType.ERROR,cex.getErrorMessage(),ButtonType.OK);
+        } catch (ConnectionRefusedException cex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, cex.getErrorMessage(), ButtonType.OK);
             alert.show();
         } catch (Exception ex) {
             btnSignUp.setDisable(true);
@@ -193,5 +187,15 @@ public class SignUpController {
         } else {
             label.setVisible(false);
         }
+    }
+
+    private void setUserInfo() {
+        user.setFullname(txtFullName.getText());
+        user.setEmail(txtEmail.getText());
+        user.setLogin(txtLogin.getText());
+        user.setPassword(pswPassword.getText());
+        user.setLastPasswordChange(LocalDateTime.now());
+        user.setPrivilege(UserPrivilege.USER);
+        user.setStatus(UserStatus.ENABLED);
     }
 }
