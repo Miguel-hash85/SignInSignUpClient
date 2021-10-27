@@ -106,7 +106,7 @@ public class SignedInController {
          Stage stageSignIn=new Stage();
          try {
             Parent root = (Parent) loader.load();         
-            SignedInController controller = loader.getController();
+            SignInController controller = loader.getController();
             controller.setLabelText();
             controller.setStage(stageSignIn);
             controller.initStage(root);

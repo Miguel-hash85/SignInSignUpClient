@@ -5,7 +5,13 @@
  */
 package view;
 
+import classes.DataEncapsulation;
+import classes.Message;
 import classes.User;
+import classes.UserPrivilege;
+import classes.UserStatus;
+import interfaces.Signable;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
@@ -64,6 +70,8 @@ public class SignUpController {
 
     private Stage stage;
     private User user;
+    private DataEncapsulation data;
+    private Signable signable;
 
     public void initStage(Parent root) {
         //stage.initModality(Modality.APPLICATION_MODAL); 
@@ -85,6 +93,13 @@ public class SignUpController {
         stage.show();
     }
 
+    public Signable getSignable() {
+        return signable;
+    }
+
+    public void setSignable(Signable signable) {
+        this.signable = signable;
+    }   
     public User getUser() {
         return user;
     }
@@ -104,6 +119,14 @@ public class SignUpController {
     public void signUp(ActionEvent action) {
         try {
             Validation();
+            user.setFullname(txtFullName.getText());
+            user.setEmail(txtEmail.getText());         
+            user.setLogin(txtLogin.getText());
+            user.setPassword(pswPassword.getText());
+            user.setLastPasswordChange(LocalDateTime.now());
+            user.setPrivilege(UserPrivilege.USER);
+            user.setStatus(UserStatus.ENABLED);
+            signable.signUp(user);
             stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignedInWindow.fxml"));
             Stage stageSignIn = new Stage();
