@@ -10,7 +10,10 @@ import classes.Message;
 import classes.User;
 import classes.UserPrivilege;
 import classes.UserStatus;
+import exceptions.ConnectionRefusedException;
+import exceptions.UserAlreadyExistException;
 import interfaces.Signable;
+import java.net.ConnectException;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +23,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -99,7 +104,8 @@ public class SignUpController {
 
     public void setSignable(Signable signable) {
         this.signable = signable;
-    }   
+    }
+
     public User getUser() {
         return user;
     }
@@ -120,7 +126,7 @@ public class SignUpController {
         try {
             Validation();
             user.setFullname(txtFullName.getText());
-            user.setEmail(txtEmail.getText());         
+            user.setEmail(txtEmail.getText());
             user.setLogin(txtLogin.getText());
             user.setPassword(pswPassword.getText());
             user.setLastPasswordChange(LocalDateTime.now());
@@ -130,12 +136,18 @@ public class SignUpController {
             stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignedInWindow.fxml"));
             Stage stageSignIn = new Stage();
+        } catch (UserAlreadyExistException aex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR,aex.getErrorMessage(),ButtonType.OK);
+            alert.show();
+        } catch(ConnectionRefusedException cex){
+            Alert alert = new Alert(Alert.AlertType.ERROR,cex.getErrorMessage(),ButtonType.OK);
+            alert.show();
         } catch (Exception ex) {
             btnSignUp.setDisable(true);
             if (ex.getMessage().equalsIgnoreCase("Error,Email not valid!")) {
                 lblEmailMax.setVisible(true);
                 txtEmail.requestFocus();
-            }else if (ex.getMessage().equalsIgnoreCase("Error,Password does not match!")){
+            } else if (ex.getMessage().equalsIgnoreCase("Error,Password does not match!")) {
                 lblPasswordMax.setVisible(true);
                 pswPassword.requestFocus();
             }

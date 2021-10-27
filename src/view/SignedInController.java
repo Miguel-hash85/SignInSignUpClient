@@ -112,6 +112,7 @@ public class SignedInController {
             controller.initStage(root);
         } catch (IOException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR,"ERROR WHILE LOGING OUT",ButtonType.OK);
+            alert.show();
         }
     }
 }
