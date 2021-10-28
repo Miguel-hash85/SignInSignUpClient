@@ -20,7 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 /**
- *
+ * 
  * @author Miguel Sánchez
  */
 public class SignableLogicImplementation implements Signable{
