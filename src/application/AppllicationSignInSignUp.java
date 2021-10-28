@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package application;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -12,12 +12,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import view.SignInController;
 
 /**
  *
  * @author 2dam
  */
-public class SignInWindow extends Application {
+public class AppllicationSignInSignUp extends Application {
 
     
 
@@ -32,7 +33,7 @@ public class SignInWindow extends Application {
             controller.initStage(root);
            
         } catch (IOException ex) {
-            Logger.getLogger(SignInWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }
 

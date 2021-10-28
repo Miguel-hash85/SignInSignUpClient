@@ -11,6 +11,8 @@ import exceptions.ConnectionRefusedException;
 import exceptions.IncorrectPasswordException;
 import interfaces.Signable;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,6 +28,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import logic.SignableFactory;
 
 /**
  *
@@ -60,11 +63,11 @@ public class SignInController {
     private Signable signable;
     private SignableFactory signableFactory;
 
-    void setStage(Stage primaryStage) {
+    public void setStage(Stage primaryStage) {
         this.stage = primaryStage;
     }
 
-    void initStage(Parent root) {
+    public void initStage(Parent root) {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("SignIn");
@@ -74,7 +77,7 @@ public class SignInController {
         btnSignIn.setOnAction(this::signIn);
         txtUserName.textProperty().addListener(this::textChanged);
         txtPasswd.textProperty().addListener(this::textChanged);
-        // signUpLink.setOnAction(this::signUp);
+        signUpLink.setOnAction(this::signUp);
         lblPasswdMax.setVisible(false);
         lblUserMax.setVisible(false);
         stage.show();
@@ -95,7 +98,7 @@ public class SignInController {
      * @param oldValue
      * @param newValue
      */
-    public void textChanged(ObservableValue observable, Object oldValue, Object newValue) {
+    public void textChanged(ObservableValue observable, String oldValue, String newValue) {
         if (!txtPasswd.getText().trim().equals("") && !txtUserName.getText().trim().equals("")) {
             btnSignIn.setDisable(false);
         } else {
@@ -111,6 +114,7 @@ public class SignInController {
      */
     public void signIn(ActionEvent action) {
         User userSignedIn = new User();
+        signableFactory = new SignableFactory();
         user.setLogin(txtUserName.getText());
         user.setPassword(txtPasswd.getText());
         try {
@@ -118,15 +122,11 @@ public class SignInController {
             userSignedIn = signable.signIn(user);
             sendUser(userSignedIn);
             stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
-        } catch (UserNotFoundException userNotFound) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, userNotFound.getErrorMessage(), ButtonType.OK);
+        } catch (UserNotFoundException |IncorrectPasswordException |ConnectionRefusedException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
             alert.show();
-        } catch (IncorrectPasswordException passwordError) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, passwordError.getErrorMessage(), ButtonType.OK);
-            alert.show();
-        } catch (ConnectionRefusedException connectionError) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, connectionError.getErrorMessage(), ButtonType.OK);
-            alert.show();
+        }catch (Exception ex) {
+            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -136,14 +136,15 @@ public class SignInController {
      * @param action
      */
     public void signUp(ActionEvent action) {
+        signableFactory = new SignableFactory();
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_SHOWING));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignUpWindow.fxml"));
-        Stage stageSignIn = new Stage();
+        Stage stageSignUp = new Stage();
         try {
             Parent root = (Parent) loader.load();
             SignUpController controller = loader.getController();
-            controller.setSignable(signableFactory.getSignableImplementation);
-            controller.setStage(stageSignIn);
+            controller.setSignable(signableFactory.getSignableImplementation());
+            controller.setStage(stageSignUp);
             controller.initStage(root);
         } catch (IOException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "ERROR WHILE SIGNING UP", ButtonType.OK);
@@ -165,7 +166,7 @@ public class SignInController {
         Stage stageSignIn = new Stage();
         try {
             Parent root = (Parent) loader.load();
-            SignUpController controller = loader.getController();
+            SignedInController controller = loader.getController();
             controller.setLabelText();
             controller.setStage(stageSignIn);
             controller.setUser(user);

@@ -124,18 +124,34 @@ public class SignUpController {
 
     public void signUp(ActionEvent action) {
         try {
-            Validation();
+            validation();
             setUserInfo();
             signable.signUp(user);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Signed Up Correctly", ButtonType.OK);
+            alert.show();
             stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignedInWindow.fxml"));
-            Stage stageSignIn = new Stage();
-        } catch (UserAlreadyExistException aex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, aex.getErrorMessage(), ButtonType.OK);
-            alert.show();
-        } catch (ConnectionRefusedException cex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, cex.getErrorMessage(), ButtonType.OK);
-            alert.show();
+        } catch (UserAlreadyExistException | ConnectionRefusedException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
+            alert.show();     
+        } catch (Exception ex) {
+            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void validation() {
+        //Username
+
+        //Email
+        try {
+            if (!txtEmail.getText().matches("[A-Za-z0-9._%+-]+@[a-z0-9.-]+.com")) {
+                lblEmailMax.setText("Error,Email not valid!");
+                throw new Exception("Error,Email not valid!");
+            }
+            //Password
+            if (!pswRepeatPassword.getText().equalsIgnoreCase(pswPassword.getText())) {
+                lblPasswordMax.setText("Error,Password does not match!");
+                throw new Exception("Error,Password does not match!");
+            }
         } catch (Exception ex) {
             btnSignUp.setDisable(true);
             if (ex.getMessage().equalsIgnoreCase("Error,Email not valid!")) {
@@ -145,23 +161,6 @@ public class SignUpController {
                 lblPasswordMax.setVisible(true);
                 pswPassword.requestFocus();
             }
-
-        }
-
-    }
-
-    private void Validation() throws Exception {
-        //Username
-
-        //Email
-        if (!txtEmail.getText().matches("[A-Za-z0-9._%+-]+@[a-z0-9.-]+.com")) {
-            lblEmailMax.setText("Error,Email not valid!");
-            throw new Exception("Error,Email not valid!");
-        }
-        //Password
-        if (!pswRepeatPassword.getText().equalsIgnoreCase(pswPassword.getText())) {
-            lblPasswordMax.setText("Error,Password does not match!");
-            throw new Exception("Error,Password does not match!");
         }
     }
 
@@ -190,6 +189,7 @@ public class SignUpController {
     }
 
     private void setUserInfo() {
+        user = new User();
         user.setFullname(txtFullName.getText());
         user.setEmail(txtEmail.getText());
         user.setLogin(txtLogin.getText());
