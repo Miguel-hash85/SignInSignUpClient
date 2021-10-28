@@ -18,7 +18,7 @@ import view.SignInController;
  *
  * @author 2dam
  */
-public class AppllicationSignInSignUp extends Application {
+public class ApplicationSignInSignUp extends Application {
 
     
 

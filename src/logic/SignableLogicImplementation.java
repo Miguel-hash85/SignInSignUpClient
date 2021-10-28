@@ -55,8 +55,8 @@ public class SignableLogicImplementation implements Signable {
         out.writeObject(data);
         data = (DataEncapsulation) in.readObject();
         switch (data.getMessage()) {
-            case OK:
-                
+            case CONNECTION_ERROR:
+                throw new ConnectionRefusedException();
             case EXISTING_USERNAME:
                 throw new UserAlreadyExistException();
             default:
@@ -93,6 +93,8 @@ public class SignableLogicImplementation implements Signable {
                 throw new IncorrectPasswordException();
             case USER_NOTFOUND:
                 throw new UserNotFoundException();
+            case CONNECTION_ERROR:
+                throw new ConnectionRefusedException();
             default:
                 break;
         }
