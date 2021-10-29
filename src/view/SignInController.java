@@ -113,11 +113,13 @@ public class SignInController {
      * @param action
      */
     public void signIn(ActionEvent action) {
-        User userSignedIn = new User();
-        signableFactory = new SignableFactory();
-        user.setLogin(txtUserName.getText());
-        user.setPassword(txtPasswd.getText());
+        
         try {
+            User userSignedIn;
+            user=new User();
+            signableFactory = new SignableFactory();
+            user.setLogin(txtUserName.getText());
+            user.setPassword(txtPasswd.getText());
             signable = signableFactory.getSignableImplementation();
             userSignedIn = signable.signIn(user);
             sendUser(userSignedIn);
@@ -167,9 +169,9 @@ public class SignInController {
         try {
             Parent root = (Parent) loader.load();
             SignedInController controller = loader.getController();
+            controller.setUser(user);
             controller.setLabelText();
             controller.setStage(stageSignIn);
-            controller.setUser(user);
             controller.initStage(root);
         } catch (IOException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "ERROR WHILE SIGNING UP", ButtonType.OK);
