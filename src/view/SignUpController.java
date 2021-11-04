@@ -30,6 +30,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -79,7 +80,7 @@ public class SignUpController {
     private Signable signable;
 
     public void initStage(Parent root) {
-        //stage.initModality(Modality.APPLICATION_MODAL); 
+        stage.initModality(Modality.APPLICATION_MODAL); 
         Scene scene = new Scene(root);
         stage.setResizable(false);
         stage.setScene(scene);
@@ -143,7 +144,7 @@ public class SignUpController {
 
         //Email
         try {
-            if (!txtEmail.getText().matches("[A-Za-z0-9._%+-]+@[a-z0-9.-]+.com")) {
+            if (!txtEmail.getText().matches("[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[A-Za-z]")) {
                 lblEmailMax.setText("Error,Email not valid!");
                 throw new Exception("Error,Email not valid!");
             }

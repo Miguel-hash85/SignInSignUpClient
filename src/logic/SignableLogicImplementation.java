@@ -17,6 +17,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import static java.lang.Thread.sleep;
 import java.net.Socket;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert;
@@ -28,12 +29,14 @@ import view.SignUpController;
  * @author Miguel Sánchez
  */
 public class SignableLogicImplementation implements Signable {
-
+    
+    private ResourceBundle resourceBundle=ResourceBundle.getBundle("config.configuration");
     private Socket socket;
     ObjectInputStream in = null;
     ObjectOutputStream out = null;
     private DataEncapsulation data;
-
+    private String host;
+    private int port;
     /**
      * This method implements the User Sign Up
      *
@@ -44,8 +47,10 @@ public class SignableLogicImplementation implements Signable {
      */
     @Override
     public void signUp(User user) throws UserAlreadyExistException, ConnectionRefusedException, Exception {
-        try {
-            socket = new Socket("127.0.0.1", 9000);
+        try {        
+            host = resourceBundle.getString("SERVERHOST");
+            port=Integer.valueOf(resourceBundle.getString("PORT"));
+            socket = new Socket(host,port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
             data = new DataEncapsulation();
@@ -83,7 +88,9 @@ public class SignableLogicImplementation implements Signable {
     public User signIn(User user) throws Exception, UserNotFoundException, IncorrectPasswordException, ConnectionRefusedException {
 
         try {
-            socket = new Socket("127.0.0.1", 9000);
+            host = resourceBundle.getString("SERVERHOST");
+            port=Integer.valueOf(resourceBundle.getString("PORT"));
+            socket = new Socket(host, port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
             data = new DataEncapsulation();
