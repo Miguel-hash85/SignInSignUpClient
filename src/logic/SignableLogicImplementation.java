@@ -29,14 +29,15 @@ import view.SignUpController;
  * @author Miguel Sánchez
  */
 public class SignableLogicImplementation implements Signable {
-    
-    private ResourceBundle resourceBundle=ResourceBundle.getBundle("config.configuration");
+
+    private ResourceBundle resourceBundle = ResourceBundle.getBundle("config.configuration");
     private Socket socket;
     ObjectInputStream in = null;
     ObjectOutputStream out = null;
     private DataEncapsulation data;
     private String host;
     private int port;
+
     /**
      * This method implements the User Sign Up
      *
@@ -47,31 +48,28 @@ public class SignableLogicImplementation implements Signable {
      */
     @Override
     public void signUp(User user) throws UserAlreadyExistException, ConnectionRefusedException, Exception {
-        try {        
+        try {
             host = resourceBundle.getString("SERVERHOST");
-            port=Integer.valueOf(resourceBundle.getString("PORT"));
-            socket = new Socket(host,port);
+            port = Integer.valueOf(resourceBundle.getString("PORT"));
+            socket = new Socket(host, port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            data = new DataEncapsulation();
-            data.setUser(user);
-            data.setMessage(Message.SIGNUP);
-            out.writeObject(data);
-            data = (DataEncapsulation) in.readObject();
-            switch (data.getMessage()) {
-                case CONNECTION_ERROR:
-                    throw new ConnectionRefusedException();
-                case EXISTING_USERNAME:
-                    throw new UserAlreadyExistException();
-                default:
-                    break;
-            }
         } catch (java.net.ConnectException ex) {
             throw new ConnectionRefusedException();
-        } finally {
-            socket.close();
         }
-
+        data = new DataEncapsulation();
+        data.setUser(user);
+        data.setMessage(Message.SIGNUP);
+        out.writeObject(data);
+        data = (DataEncapsulation) in.readObject();
+        switch (data.getMessage()) {
+            case CONNECTION_ERROR:
+                throw new ConnectionRefusedException();
+            case EXISTING_USERNAME:
+                throw new UserAlreadyExistException();
+            default:
+                break;
+        }
     }
 
     /**
@@ -89,33 +87,31 @@ public class SignableLogicImplementation implements Signable {
 
         try {
             host = resourceBundle.getString("SERVERHOST");
-            port=Integer.valueOf(resourceBundle.getString("PORT"));
+            port = Integer.valueOf(resourceBundle.getString("PORT"));
             socket = new Socket(host, port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            data = new DataEncapsulation();
-            data.setUser(user);
-            data.setMessage(Message.SIGNIN);
-            out.writeObject(data);
-            data = (DataEncapsulation) in.readObject();
-            switch (data.getMessage()) {
-                case INCORRECT_PASSWORD:
-                    throw new IncorrectPasswordException();
-                case USER_NOTFOUND:
-                    throw new UserNotFoundException();
-                case CONNECTION_ERROR:
-                    throw new ConnectionRefusedException();
-                default:
-                    break;
-            }
         } catch (java.net.ConnectException ex) {
             throw new ConnectionRefusedException();
-        } finally {
-            socket.close();
+        }
+        data = new DataEncapsulation();
+        data.setUser(user);
+        data.setMessage(Message.SIGNIN);
+        out.writeObject(data);
+        data = (DataEncapsulation) in.readObject();
+        switch (data.getMessage()) {
+            case INCORRECT_PASSWORD:
+                throw new IncorrectPasswordException();
+            case USER_NOTFOUND:
+                throw new UserNotFoundException();
+            case CONNECTION_ERROR:
+                throw new ConnectionRefusedException();
+            default:
+                break;
         }
 
-        return data.getUser();
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    return data.getUser ();
+    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+}
 
 }
