@@ -29,8 +29,8 @@ import view.SignUpController;
  * @author Miguel Sánchez
  */
 public class SignableLogicImplementation implements Signable {
-    
-    private static final Logger logger=Logger.getLogger("logic.class");
+
+    private static final Logger logger = Logger.getLogger("logic.class");
 
     private ResourceBundle resourceBundle = ResourceBundle.getBundle("config.configuration");
     private Socket socket;
@@ -73,7 +73,9 @@ public class SignableLogicImplementation implements Signable {
         } catch (java.net.ConnectException ex) {
             throw new ConnectionRefusedException();
         } finally {
-            socket.close();
+            if (socket != null) {
+                socket.close();
+            }
         }
 
     }
@@ -115,7 +117,9 @@ public class SignableLogicImplementation implements Signable {
         } catch (java.net.ConnectException ex) {
             throw new ConnectionRefusedException();
         } finally {
-            socket.close();
+            if (socket != null) {
+                socket.close();
+            }
         }
 
         return data.getUser();

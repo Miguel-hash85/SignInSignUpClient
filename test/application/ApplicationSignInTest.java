@@ -57,16 +57,16 @@ public class ApplicationSignInTest extends ApplicationTest{
         eraseText(txtUserName.getText().length());
         
         //check btnSignIn when tstUsername is empty
-        passwordField=lookup("#passwordField").query();
-        clickOn("#passwordField");
+        passwordField=lookup("#txtPasswd").query();
+        clickOn("#txtPasswd");
         write("userpassword");
         verifyThat("#btnSignIn", isDisabled());
-        doubleClickOn("#passwordField");
+        doubleClickOn("#txtPasswd");
         eraseText(passwordField.getText().length());
         
         //check btnSIgnIn when maximum characters in txtUsername is reached
         clickOn("#txtUserName");
-        write("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        txtUserName.setText("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
@@ -77,8 +77,8 @@ public class ApplicationSignInTest extends ApplicationTest{
         
         
         //check btnSIgnIn when maximum characters in passwordField is reached
-        clickOn("#passwordField");
-        write("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        clickOn("#txtPasswd");
+        passwordField.setText("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
@@ -90,7 +90,7 @@ public class ApplicationSignInTest extends ApplicationTest{
         verifyThat("#btnSignIn", isDisabled());
         doubleClickOn("#txtUserName");
         eraseText(1);
-        doubleClickOn("#passwordField");
+        doubleClickOn("#txtPasswd");
         eraseText(1);
 
     }
@@ -99,7 +99,7 @@ public class ApplicationSignInTest extends ApplicationTest{
     public void test2SignIn(){
         clickOn("#txtUserName");
         write("Aitorrdg");
-        clickOn("#passwordField");
+        clickOn("#txtPasswd");
         write("abcd*1234");
         verifyThat("#btnSignIn",isEnabled());
         clickOn("#btnSignIn");

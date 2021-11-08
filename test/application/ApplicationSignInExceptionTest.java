@@ -39,19 +39,18 @@ public class ApplicationSignInExceptionTest extends ApplicationTest {
 
     }
 
-    @Test(expected = ConnectionRefusedException.class)
-    public void test1ConnectionRefusedException() throws ConnectionRefusedException {
+    @Test
+    public void test1ConnectionRefusedException(){
         clickOn("#txtUserName");
         write("a");
-        clickOn("#passwordField");
+        clickOn("#txtPasswd");
         write("a");
         clickOn("#btnSignIn");
-        verifyThat("Aceptar", NodeMatchers.isVisible());
-        throw new ConnectionRefusedException();
+        verifyThat(new ConnectionRefusedException().getMessage(), NodeMatchers.isVisible());
     }
 
-    @Test(expected = ConnectionRefusedException.class)
-    public void test2ConnectionRefusedException() throws ConnectionRefusedException {
+    @Test
+    public void test2ConnectionRefusedException(){
         clickOn("Aceptar");
         clickOn("#signUpLink");
         verifyThat("#paneSignUp", isVisible());
@@ -66,8 +65,7 @@ public class ApplicationSignInExceptionTest extends ApplicationTest {
         clickOn("#pswRepeatPassword");
         write("abcd*1234");
         clickOn("#btnSignUp");
-        verifyThat("Aceptar",NodeMatchers.isVisible());
-        throw new ConnectionRefusedException();
+        verifyThat(new ConnectionRefusedException().getMessage(),NodeMatchers.isVisible());
     }
 
 }

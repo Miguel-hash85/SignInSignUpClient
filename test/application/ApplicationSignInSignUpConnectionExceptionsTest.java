@@ -26,6 +26,7 @@ import static org.testfx.matcher.base.NodeMatchers.isVisible;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ApplicationSignInSignUpConnectionExceptionsTest extends ApplicationTest {
+    
 
     @BeforeClass
     public static void setUpClass() throws TimeoutException {
@@ -34,32 +35,38 @@ public class ApplicationSignInSignUpConnectionExceptionsTest extends Application
 
     }
 
-    @Test(expected = UserNotFoundException.class)
-    public void test1UserNotFoundException() throws UserNotFoundException {
+    @Test
+    public void test1UserNotFoundException() {
         doubleClickOn("#txtUserName");
         write("manolete");
-        doubleClickOn("#passwordField");
+        clickOn("#txtPasswd");
         write("a");
         clickOn("#btnSignIn");
-        verifyThat("Aceptar", NodeMatchers.isVisible());
-        throw new UserNotFoundException();
-    }
-
-    @Test(expected = IncorrectPasswordException.class)
-    public void test2IncorrectPasswordException() throws IncorrectPasswordException {
+        verifyThat(new UserNotFoundException().getMessage(), NodeMatchers.isVisible());
         clickOn("Aceptar");
         doubleClickOn("#txtUserName");
-        write("Aitorrdg");
-        doubleClickOn("#passwordField");
-        write("a");
-        clickOn("#btnSignIn");
-        verifyThat("Aceptar", NodeMatchers.isVisible());
-        throw new IncorrectPasswordException();
+        eraseText(1);
+        doubleClickOn("#txtPasswd");
+        eraseText(1);
     }
 
-    @Test(expected = UserAlreadyExistException.class)
-    public void test3UserAlreadyExistException() throws UserAlreadyExistException {
+    @Test
+    public void test2IncorrectPasswordException(){
+        doubleClickOn("#txtUserName");
+        write("Aitorrdg");
+        doubleClickOn("#txtPasswd");
+        write("a");
+        clickOn("#btnSignIn");
+        verifyThat(new IncorrectPasswordException().getMessage(), NodeMatchers.isVisible());
         clickOn("Aceptar");
+        doubleClickOn("#txtUserName");
+        eraseText(1);
+        doubleClickOn("#txtPasswd");
+        eraseText(1);
+    }
+
+    @Test
+    public void test3UserAlreadyExistException() throws UserAlreadyExistException {
         clickOn("#signUpLink");
         verifyThat("#paneSignUp", isVisible());
         clickOn("#txtFullName");
@@ -73,9 +80,7 @@ public class ApplicationSignInSignUpConnectionExceptionsTest extends Application
         clickOn("#pswRepeatPassword");
         write("abcd*1234");
         clickOn("#btnSignUp");
-        verifyThat("Aceptar",NodeMatchers.isVisible());
-        throw new UserAlreadyExistException();
-        
+        verifyThat(new UserAlreadyExistException().getMessage(),NodeMatchers.isVisible());
+        clickOn("Aceptar");
     }
-
 }
