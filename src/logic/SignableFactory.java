@@ -13,9 +13,9 @@ import java.util.logging.Logger;
  * @author 2dam
  */
 public class SignableFactory {
-    private static final Logger logger=Logger.getLogger("logic.class");
+    private static final Logger LOGGER=Logger.getLogger("logic.class");
     public Signable getSignableImplementation(){
-        logger.info("signableImplementation created and sent");
+        LOGGER.info("signableImplementation created and sent");
         Signable signable  =new SignableLogicImplementation();
         return signable;
     }

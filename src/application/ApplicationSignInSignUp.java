@@ -20,7 +20,7 @@ import view.SignInController;
  */
 public class ApplicationSignInSignUp extends Application {
     
-    private static final Logger logger=Logger.getLogger("application.ApplicationSignInSignUp.class");
+    private static final Logger LOGGER=Logger.getLogger("application.ApplicationSignInSignUp.class");
 
         
     
@@ -28,7 +28,7 @@ public class ApplicationSignInSignUp extends Application {
     @Override
     public void start(Stage primaryStage) {
         
-        logger.info("App started");
+        LOGGER.info("App started");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignInWindow.fxml"));
         try {
             
