@@ -9,17 +9,12 @@ package application;
 import java.util.concurrent.TimeoutException;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
-
 import org.testfx.framework.junit.ApplicationTest;
-import view.SignInController;
-import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
@@ -35,6 +30,13 @@ public class ApplicationSignInTest extends ApplicationTest{
     
     private TextField txtUserName;
     private PasswordField passwordField;
+    private static final String LIMIT_CHARACTERS="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     
     
     
@@ -66,25 +68,13 @@ public class ApplicationSignInTest extends ApplicationTest{
         
         //check btnSIgnIn when maximum characters in txtUsername is reached
         clickOn("#txtUserName");
-        txtUserName.setText("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        txtUserName.setText(LIMIT_CHARACTERS);
         verifyThat("#btnSignIn", isDisabled());
         
         
         //check btnSIgnIn when maximum characters in passwordField is reached
         clickOn("#txtPasswd");
-        passwordField.setText("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        passwordField.setText(LIMIT_CHARACTERS);
         verifyThat("#lblUserMax", isVisible());
         verifyThat("#lblPasswdMax", isVisible());
         verifyThat("#btnSignIn", isDisabled());

@@ -20,7 +20,7 @@ import view.SignInController;
  */
 public class ApplicationSignInSignUp extends Application {
     
-    private static final Logger logger=Logger.getLogger("application.class");
+    private static final Logger logger=Logger.getLogger("application.ApplicationSignInSignUp.class");
 
         
     

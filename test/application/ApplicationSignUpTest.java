@@ -8,22 +8,16 @@ package application;
 import java.util.concurrent.TimeoutException;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
-
 import org.testfx.framework.junit.ApplicationTest;
-import view.SignInController;
-import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import org.testfx.matcher.base.NodeMatchers;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
-import static org.testfx.matcher.base.NodeMatchers.isInvisible;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
 /**
@@ -38,6 +32,13 @@ public class ApplicationSignUpTest extends ApplicationTest {
     private TextField txtLogin;
     private PasswordField pswPassword;
     private PasswordField pswRepeatPassword;
+    private static final String LIMIT_CHARACTERS="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
     @BeforeClass
     public static void setUpClass() throws TimeoutException {
@@ -101,45 +102,15 @@ public class ApplicationSignUpTest extends ApplicationTest {
         pswPassword.setText("");
         pswRepeatPassword.setText("");
         
-        txtFullName.setText("\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"");
+        txtFullName.setText(LIMIT_CHARACTERS);
         verifyThat("#btnSignUp", isDisabled());
-        txtEmail.setText("\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"");
+        txtEmail.setText(LIMIT_CHARACTERS);
         verifyThat("#btnSignUp", isDisabled());
-        txtLogin.setText("\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"");
+        txtLogin.setText(LIMIT_CHARACTERS);
         verifyThat("#btnSignUp", isDisabled());
-        pswPassword.setText("\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n"
-                + "                + \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"");
+        pswPassword.setText(LIMIT_CHARACTERS);
         verifyThat("#btnSignUp", isDisabled());
-        pswRepeatPassword.setText("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        pswRepeatPassword.setText(LIMIT_CHARACTERS);
         verifyThat("#btnSignUp", isDisabled());
     }
 

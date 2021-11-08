@@ -7,7 +7,6 @@ package view;
 
 import classes.User;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,13 +46,13 @@ public class SignedInController {
     private MenuItem menuExit;
     private Stage stage;
     private User user;
-    private static final Logger logger=Logger.getLogger("view.SignedInController");
+    private static final Logger LOGGER=Logger.getLogger("view.SignedInController");
     /**
      * Method that assign the value of the stage received to the class stage.
      * @param stage 
      */
     public void setStage(Stage stage) {
-        logger.info("Stage set");
+        LOGGER.info("Stage set");
         this.stage = stage;
     }
     /**
@@ -61,7 +60,7 @@ public class SignedInController {
      * @param root 
      */
     public void initStage(Parent root){
-        logger.info("Stage initiated");
+        LOGGER.info("Stage initiated");
         Scene scene=new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);
@@ -88,7 +87,7 @@ public class SignedInController {
      * Method that set the text of the labels.
      */
     public void setLabelText() {
-        logger.info("Text of the labels established");
+        LOGGER.info("Text of the labels established");
         lblEmail.setText(user.getEmail());
         lblLogin.setText(user.getLogin());
         lblFullName.setText(user.getFullname());
@@ -98,7 +97,7 @@ public class SignedInController {
      * @param action 
      */
     public void close(ActionEvent action){
-        logger.info("Stage closed");
+        LOGGER.info("Stage closed");
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
     /**
@@ -106,7 +105,7 @@ public class SignedInController {
      * @param action 
      */
     public void logOut(ActionEvent action){
-         logger.info("Stage closed and signIn window opened");
+         LOGGER.info("Stage closed and signIn window opened");
          stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
          FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignInWindow.fxml"));
          Stage stageSignIn=new Stage();

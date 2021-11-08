@@ -6,21 +6,17 @@
 package view;
 
 import classes.DataEncapsulation;
-import classes.Message;
 import classes.User;
 import classes.UserPrivilege;
 import classes.UserStatus;
 import exceptions.ConnectionRefusedException;
 import exceptions.UserAlreadyExistException;
 import interfaces.Signable;
-import java.net.ConnectException;
 import java.time.LocalDateTime;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -78,10 +74,10 @@ public class SignUpController {
     private User user;
     private DataEncapsulation data;
     private Signable signable;
-    private static final Logger logger = Logger.getLogger("view.SignUpController");
+    private static final Logger LOGGER = Logger.getLogger("view.SignUpController");
 
     public void initStage(Parent root) {
-        logger.info("Stage initiated");
+        LOGGER.info("Stage initiated");
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(root);
         stage.setResizable(false);
@@ -122,12 +118,12 @@ public class SignUpController {
     }
 
     public void signIn(ActionEvent action) {
-        logger.info("Stage closed");
+        LOGGER.info("Stage closed");
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     public void signUp(ActionEvent action) {
-        logger.info("User sent for signUp");
+        LOGGER.info("User sent for signUp");
         try {
             validation();
             setUserInfo();
@@ -146,7 +142,7 @@ public class SignUpController {
 
     private void validation() {
 
-        logger.info("Validation of the email, password and repeatPassword");
+        LOGGER.info("Validation of the email, password and repeatPassword");
         try {
             if (!txtEmail.getText().matches("[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[A-Za-z]")) {
                 lblEmailMax.setText("Error,Email not valid!");
@@ -172,7 +168,7 @@ public class SignUpController {
     }
 
     public void textChanged(ObservableValue observable, Object oldValue, Object newValue) {
-        logger.info("Analysis of the text field values");
+        LOGGER.info("Analysis of the text field values");
         if (!txtEmail.getText().trim().equals("") && !txtFullName.getText().trim().equals("")
                 && !txtLogin.getText().trim().equals("") && !pswPassword.getText().trim().equals("")
                 && !pswRepeatPassword.getText().trim().equals("")) {
@@ -188,7 +184,7 @@ public class SignUpController {
     }
 
     private void characterLimitArrived(String string, Label label) {
-        logger.info("Validation of the length of fields");
+        LOGGER.info("Validation of the length of fields");
         if (string.length() > 255) {
             label.setVisible(true);
             btnSignUp.setDisable(true);
@@ -198,7 +194,7 @@ public class SignUpController {
     }
 
     private void setUserInfo() {
-        logger.info("User information set");
+        LOGGER.info("User information set");
         user = new User();
         user.setFullname(txtFullName.getText());
         user.setEmail(txtEmail.getText());
