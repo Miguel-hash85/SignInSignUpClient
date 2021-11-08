@@ -32,9 +32,11 @@ import logic.SignableFactory;
 
 /**
  *
- * @author 2dam
+ * @author Zeeshan Yaqoob
  */
 public class SignInController {
+    
+    private static final Logger logger=Logger.getLogger("view.SignInController");
 
     // Button to sign in to the application
     @FXML
@@ -65,9 +67,11 @@ public class SignInController {
 
     public void setStage(Stage primaryStage) {
         this.stage = primaryStage;
+        logger.info("Stage set");
     }
 
     public void initStage(Parent root) {
+        logger.info("Stage initiated");
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("SignIn");
@@ -90,6 +94,7 @@ public class SignInController {
      */
     public void close(ActionEvent action) {
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        logger.info("Stage closed");
     }
 
     /**
@@ -106,6 +111,7 @@ public class SignInController {
         }
         characterLimitArrived(txtPasswd, lblPasswdMax);
         characterLimitArrived(txtUserName, lblUserMax);
+        logger.info("Text changed");
     }
 
     /**
@@ -113,7 +119,7 @@ public class SignInController {
      * @param action
      */
     public void signIn(ActionEvent action) {
-        
+        logger.info("User sent for signIn");
         try {
             User userSignedIn;
             user=new User();
@@ -138,6 +144,7 @@ public class SignInController {
      * @param action
      */
     public void signUp(ActionEvent action) {
+        logger.info("User sent for signUp");
         signableFactory = new SignableFactory();
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_SHOWING));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignUpWindow.fxml"));
@@ -154,6 +161,7 @@ public class SignInController {
     }
 
     private void characterLimitArrived(TextField textField, Label label) {
+        logger.info("character limit evaluation");
         if (textField.getText().length() > 255) {
             label.setVisible(true);
             btnSignIn.setDisable(true);
@@ -163,6 +171,7 @@ public class SignInController {
     }
 
     private void sendUser(User user) {
+        logger.info("User sent to show information in SignedInWindow");
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_SHOWING));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignedInWindow.fxml"));
         Stage stageSignIn = new Stage();

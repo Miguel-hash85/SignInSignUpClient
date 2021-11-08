@@ -19,11 +19,16 @@ import view.SignInController;
  * @author 2dam
  */
 public class ApplicationSignInSignUp extends Application {
+    
+    private static final Logger logger=Logger.getLogger("application.class");
 
+        
     
 
     @Override
     public void start(Stage primaryStage) {
+        
+        logger.info("App started");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignInWindow.fxml"));
         try {
             

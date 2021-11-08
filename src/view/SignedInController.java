@@ -47,18 +47,21 @@ public class SignedInController {
     private MenuItem menuExit;
     private Stage stage;
     private User user;
+    private static final Logger logger=Logger.getLogger("view.SignedInController");
     /**
      * Method that assign the value of the stage received to the class stage.
      * @param stage 
      */
     public void setStage(Stage stage) {
+        logger.info("Stage set");
         this.stage = stage;
     }
     /**
      * Method that receive a Parent and initialize the stage
      * @param root 
      */
-    public void initStage(Parent root){   
+    public void initStage(Parent root){
+        logger.info("Stage initiated");
         Scene scene=new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);
@@ -85,6 +88,7 @@ public class SignedInController {
      * Method that set the text of the labels.
      */
     public void setLabelText() {
+        logger.info("Text of the labels established");
         lblEmail.setText(user.getEmail());
         lblLogin.setText(user.getLogin());
         lblFullName.setText(user.getFullname());
@@ -94,6 +98,7 @@ public class SignedInController {
      * @param action 
      */
     public void close(ActionEvent action){
+        logger.info("Stage closed");
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
     /**
@@ -101,6 +106,7 @@ public class SignedInController {
      * @param action 
      */
     public void logOut(ActionEvent action){
+         logger.info("Stage closed and signIn window opened");
          stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
          FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignInWindow.fxml"));
          Stage stageSignIn=new Stage();
@@ -110,7 +116,7 @@ public class SignedInController {
             controller.setStage(stageSignIn);
             controller.initStage(root);
         } catch (IOException ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR,"ERROR WHILE LOGING OUT",ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.ERROR,"Unexpected Error Ocurred",ButtonType.OK);
             alert.show();
         }
     }

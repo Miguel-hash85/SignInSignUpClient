@@ -29,6 +29,8 @@ import view.SignUpController;
  * @author Miguel Sánchez
  */
 public class SignableLogicImplementation implements Signable {
+    
+    private static final Logger logger=Logger.getLogger("logic.class");
 
     private ResourceBundle resourceBundle = ResourceBundle.getBundle("config.configuration");
     private Socket socket;
@@ -48,6 +50,7 @@ public class SignableLogicImplementation implements Signable {
      */
     @Override
     public void signUp(User user) throws UserAlreadyExistException, ConnectionRefusedException, Exception {
+        logger.info("signUp petition sent");
         data = new DataEncapsulation();
         data.setUser(user);
         data.setMessage(Message.SIGNUP);
@@ -87,6 +90,7 @@ public class SignableLogicImplementation implements Signable {
      */
     @Override
     public User signIn(User user) throws Exception, UserNotFoundException, IncorrectPasswordException, ConnectionRefusedException {
+        logger.info("signIn petition sent");
         data = new DataEncapsulation();
         data.setUser(user);
         data.setMessage(Message.SIGNIN);

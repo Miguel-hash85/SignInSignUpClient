@@ -78,9 +78,11 @@ public class SignUpController {
     private User user;
     private DataEncapsulation data;
     private Signable signable;
+    private static final Logger logger = Logger.getLogger("view.SignUpController");
 
     public void initStage(Parent root) {
-        stage.initModality(Modality.APPLICATION_MODAL); 
+        logger.info("Stage initiated");
+        stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(root);
         stage.setResizable(false);
         stage.setScene(scene);
@@ -120,10 +122,12 @@ public class SignUpController {
     }
 
     public void signIn(ActionEvent action) {
+        logger.info("Stage closed");
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     public void signUp(ActionEvent action) {
+        logger.info("User sent for signUp");
         try {
             validation();
             setUserInfo();
@@ -133,22 +137,21 @@ public class SignUpController {
             stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
         } catch (UserAlreadyExistException | ConnectionRefusedException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
-            alert.show();     
+            alert.show();
         } catch (Exception ex) {
-            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);
+            alert.show();
         }
     }
 
     private void validation() {
-        //Username
 
-        //Email
+        logger.info("Validation of the email, password and repeatPassword");
         try {
             if (!txtEmail.getText().matches("[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[A-Za-z]")) {
                 lblEmailMax.setText("Error,Email not valid!");
                 throw new Exception("Error,Email not valid!");
             }
-            //Password
             if (!pswRepeatPassword.getText().equalsIgnoreCase(pswPassword.getText())) {
                 lblPasswordMax.setText("Error,Password does not match!");
                 throw new Exception("Error,Password does not match!");
@@ -161,11 +164,15 @@ public class SignUpController {
             } else if (ex.getMessage().equalsIgnoreCase("Error,Password does not match!")) {
                 lblPasswordMax.setVisible(true);
                 pswPassword.requestFocus();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);
+                alert.show();
             }
         }
     }
 
     public void textChanged(ObservableValue observable, Object oldValue, Object newValue) {
+        logger.info("Analysis of the text field values");
         if (!txtEmail.getText().trim().equals("") && !txtFullName.getText().trim().equals("")
                 && !txtLogin.getText().trim().equals("") && !pswPassword.getText().trim().equals("")
                 && !pswRepeatPassword.getText().trim().equals("")) {
@@ -181,6 +188,7 @@ public class SignUpController {
     }
 
     private void characterLimitArrived(String string, Label label) {
+        logger.info("Validation of the length of fields");
         if (string.length() > 255) {
             label.setVisible(true);
             btnSignUp.setDisable(true);
@@ -190,6 +198,7 @@ public class SignUpController {
     }
 
     private void setUserInfo() {
+        logger.info("User information set");
         user = new User();
         user.setFullname(txtFullName.getText());
         user.setEmail(txtEmail.getText());
