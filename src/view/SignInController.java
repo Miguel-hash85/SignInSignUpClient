@@ -9,6 +9,7 @@ import classes.User;
 import exceptions.UserNotFoundException;
 import exceptions.ConnectionRefusedException;
 import exceptions.IncorrectPasswordException;
+import exceptions.UserAlreadyExistException;
 import interfaces.Signable;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -144,7 +145,13 @@ public class SignInController {
         } catch (UserNotFoundException | IncorrectPasswordException | ConnectionRefusedException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
             alert.show();
-            txtUserName.requestFocus();
+            if(ex instanceof UserNotFoundException){
+                txtUserName.requestFocus();
+            }else if(ex instanceof IncorrectPasswordException){
+                txtPasswd.requestFocus();
+            }else{
+                txtUserName.requestFocus();
+            }
         } catch (Exception ex) {
 
             Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);

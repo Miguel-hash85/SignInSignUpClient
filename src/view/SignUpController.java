@@ -168,6 +168,12 @@ public class SignUpController {
         } catch (UserAlreadyExistException | ConnectionRefusedException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
             alert.show();
+            if(ex instanceof UserAlreadyExistException){
+                txtLogin.requestFocus();
+            }else{
+                txtFullName.requestFocus();
+            }
+            
         } catch (Exception ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);
             alert.show();
