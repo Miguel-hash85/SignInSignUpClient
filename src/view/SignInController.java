@@ -61,15 +61,26 @@ public class SignInController {
     private Label lblUserMax;
     // Stage that will be used to initiate other windows
     private Stage stage;
+    // An object of user to work with
     private User user;
+    // An object of interface to ge implementation
     private Signable signable;
+    // An object of signableFactory to call and recieve an object of signableLogicImplementation.
     private SignableFactory signableFactory;
 
+    /**
+     *
+     * @param primaryStage is principal window of application.
+     */
     public void setStage(Stage primaryStage) {
         this.stage = primaryStage;
         LOGGER.info("Stage set");
     }
 
+    /**
+     *
+     * @param 
+     */
     public void initStage(Parent root) {
         LOGGER.info("Stage initiated");
         Scene scene = new Scene(root);

@@ -76,6 +76,10 @@ public class SignUpController {
     private Signable signable;
     private static final Logger LOGGER = Logger.getLogger("view.SignUpController");
 
+    /**
+     *
+     * @param root
+     */
     public void initStage(Parent root) {
         LOGGER.info("Stage initiated");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -97,31 +101,59 @@ public class SignUpController {
         stage.show();
     }
 
+    /**
+     *
+     * @return
+     */
     public Signable getSignable() {
         return signable;
     }
 
+    /**
+     *
+     * @param signable
+     */
     public void setSignable(Signable signable) {
         this.signable = signable;
     }
 
+    /**
+     *
+     * @return
+     */
     public User getUser() {
         return user;
     }
 
+    /**
+     *
+     * @param user
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     *
+     * @param stage
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    /**
+     *
+     * @param action
+     */
     public void signIn(ActionEvent action) {
         LOGGER.info("Stage closed");
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
+    /**
+     *
+     * @param action
+     */
     public void signUp(ActionEvent action) {
         LOGGER.info("User sent for signUp");
         try {
@@ -167,6 +199,12 @@ public class SignUpController {
         }
     }
 
+    /**
+     *
+     * @param observable
+     * @param oldValue
+     * @param newValue
+     */
     public void textChanged(ObservableValue observable, Object oldValue, Object newValue) {
         LOGGER.info("Analysis of the text field values");
         if (!txtEmail.getText().trim().equals("") && !txtFullName.getText().trim().equals("")

@@ -43,10 +43,10 @@ public class SignableLogicImplementation implements Signable {
     /**
      * This method implements the User Sign Up
      *
-     * @param user
-     * @throws Exception
-     * @throws UserAlreadyExistException
-     * @throws ConnectionRefusedException
+     * @param user. receives an user to send it to the server
+     * @throws Exception. This Method can throws Excptions.
+     * @throws UserAlreadyExistException, will be thrown When it gets a message from server that the user already exist.
+     * @throws ConnectionRefusedException, will be thrown when connection to server get refused.
      */
     @Override
     public void signUp(User user) throws UserAlreadyExistException, ConnectionRefusedException, Exception {

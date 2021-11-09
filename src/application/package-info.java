@@ -4,6 +4,6 @@
  * and open the template in the editor.
  */
 /**
- * Package where configuration classes would be created.
+ * Package where application class is located.
  */
-package config;
+package application;

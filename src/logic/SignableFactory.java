@@ -10,10 +10,15 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author 2dam
+ * @author Zeeshan Yaqoob
  */
 public class SignableFactory {
     private static final Logger LOGGER=Logger.getLogger("logic.class");
+
+    /**
+     *
+     * @return This class returns an object of Signable logic implementation.
+     */
     public Signable getSignableImplementation(){
         LOGGER.info("signableImplementation created and sent");
         Signable signable  =new SignableLogicImplementation();
