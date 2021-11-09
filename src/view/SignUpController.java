@@ -157,12 +157,14 @@ public class SignUpController {
     public void signUp(ActionEvent action) {
         LOGGER.info("User sent for signUp");
         try {
-            validation();
-            setUserInfo();
+            if(!validation()){
+                setUserInfo();
             signable.signUp(user);
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Signed Up Correctly", ButtonType.OK);
             alert.show();
             stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+            }
+            
         } catch (UserAlreadyExistException | ConnectionRefusedException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
             alert.show();
@@ -172,8 +174,8 @@ public class SignUpController {
         }
     }
 
-    private void validation() {
-
+    private boolean validation() {
+        boolean error=false;
         LOGGER.info("Validation of the email, password and repeatPassword");
         try {
             if (!txtEmail.getText().matches("[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[A-Za-z]")) {
@@ -185,6 +187,7 @@ public class SignUpController {
                 throw new Exception("Error,Password does not match!");
             }
         } catch (Exception ex) {
+            error=true;
             btnSignUp.setDisable(true);
             if (ex.getMessage().equalsIgnoreCase("Error,Email not valid!")) {
                 lblEmailMax.setVisible(true);
@@ -196,6 +199,8 @@ public class SignUpController {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);
                 alert.show();
             }
+        }finally{
+            return error;
         }
     }
 

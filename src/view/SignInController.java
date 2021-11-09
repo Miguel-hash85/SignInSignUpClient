@@ -35,8 +35,8 @@ import logic.SignableFactory;
  * @author Zeeshan Yaqoob
  */
 public class SignInController {
-    
-    private static final Logger LOGGER=Logger.getLogger("view.SignInController");
+
+    private static final Logger LOGGER = Logger.getLogger("view.SignInController");
 
     // Button to sign in to the application
     @FXML
@@ -79,7 +79,7 @@ public class SignInController {
 
     /**
      *
-     * @param 
+     * @param
      */
     public void initStage(Parent root) {
         LOGGER.info("Stage initiated");
@@ -133,7 +133,7 @@ public class SignInController {
         LOGGER.info("User sent for signIn");
         try {
             User userSignedIn;
-            user=new User();
+            user = new User();
             signableFactory = new SignableFactory();
             user.setLogin(txtUserName.getText());
             user.setPassword(txtPasswd.getText());
@@ -141,11 +141,14 @@ public class SignInController {
             userSignedIn = signable.signIn(user);
             sendUser(userSignedIn);
             stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
-        } catch (UserNotFoundException |IncorrectPasswordException |ConnectionRefusedException ex) {
+        } catch (UserNotFoundException | IncorrectPasswordException | ConnectionRefusedException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
             alert.show();
-        }catch (Exception ex) {
-            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
+            txtUserName.requestFocus();
+        } catch (Exception ex) {
+
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);
+            alert.show();
         }
 
     }
