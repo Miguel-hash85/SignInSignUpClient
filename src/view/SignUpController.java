@@ -74,11 +74,13 @@ public class SignUpController {
     private User user;
     private DataEncapsulation data;
     private Signable signable;
+    
+    // Logger to record the events and trace out errors.
     private static final Logger LOGGER = Logger.getLogger("view.SignUpController");
 
     /**
      *
-     * @param root
+     * @param root base class
      */
     public void initStage(Parent root) {
         LOGGER.info("Stage initiated");
@@ -103,7 +105,7 @@ public class SignUpController {
 
     /**
      *
-     * @return
+     * @return an object of interface Signable.
      */
     public Signable getSignable() {
         return signable;
@@ -111,7 +113,7 @@ public class SignUpController {
 
     /**
      *
-     * @param signable
+     * @param signable, receives an object of interface Signable.
      */
     public void setSignable(Signable signable) {
         this.signable = signable;
@@ -119,7 +121,7 @@ public class SignUpController {
 
     /**
      *
-     * @return
+     * @return an object user,
      */
     public User getUser() {
         return user;
@@ -127,7 +129,7 @@ public class SignUpController {
 
     /**
      *
-     * @param user
+     * @param user, receives an object user.
      */
     public void setUser(User user) {
         this.user = user;
@@ -135,7 +137,7 @@ public class SignUpController {
 
     /**
      *
-     * @param stage
+     * @param stage receives an object stage
      */
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -143,7 +145,7 @@ public class SignUpController {
 
     /**
      *
-     * @param action
+     * @param action if user prefer to signIn, that will close the current window.
      */
     public void signIn(ActionEvent action) {
         LOGGER.info("Stage closed");
@@ -152,7 +154,7 @@ public class SignUpController {
 
     /**
      *
-     * @param action
+     * @param action once the user is signedUp without error current window will get closed.
      */
     public void signUp(ActionEvent action) {
         LOGGER.info("User sent for signUp");
@@ -179,7 +181,7 @@ public class SignUpController {
             alert.show();
         }
     }
-
+    //Method to validate the email and control that password and repeat would always be same.
     private boolean validation() {
         boolean error=false;
         LOGGER.info("Validation of the email, password and repeatPassword");
@@ -212,9 +214,10 @@ public class SignUpController {
 
     /**
      *
-     * @param observable
-     * @param oldValue
-     * @param newValue
+     * @param observable, object that has listener, being observed.
+     * @param oldValue indicates the old value(could be default).
+     * @param newValue indicates the newly introduced value.
+     * 
      */
     public void textChanged(ObservableValue observable, Object oldValue, Object newValue) {
         LOGGER.info("Analysis of the text field values");
@@ -231,7 +234,7 @@ public class SignUpController {
         characterLimitArrived(pswPassword.getText(), lblPasswordMax);
         characterLimitArrived(pswRepeatPassword.getText(), lblPasswordMax);
     }
-
+    //Method to check the character limit of a textfield.
     private void characterLimitArrived(String string, Label label) {
         LOGGER.info("Validation of the length of fields");
         if (string.length() > 255) {
@@ -241,7 +244,7 @@ public class SignUpController {
             label.setVisible(false);
         }
     }
-
+    // Method to set assign details to an user.
     private void setUserInfo() {
         LOGGER.info("User information set");
         user = new User();

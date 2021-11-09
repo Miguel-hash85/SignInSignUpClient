@@ -37,6 +37,7 @@ import logic.SignableFactory;
  */
 public class SignInController {
 
+    // Logger to record the events and trace out errors.
     private static final Logger LOGGER = Logger.getLogger("view.SignInController");
 
     // Button to sign in to the application
@@ -80,7 +81,8 @@ public class SignInController {
 
     /**
      *
-     * @param
+     * @param root base class
+     * Scene is created, and defines the intial state of window.
      */
     public void initStage(Parent root) {
         LOGGER.info("Stage initiated");
@@ -102,7 +104,7 @@ public class SignInController {
 
     /**
      *
-     * @param action
+     * @param action, to close the current window.
      */
     public void close(ActionEvent action) {
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
@@ -111,9 +113,11 @@ public class SignInController {
 
     /**
      *
-     * @param observable
-     * @param oldValue
-     * @param newValue
+     * @param observable, object that has listener, being observed.
+     * @param oldValue indicates the old value(could be default).
+     * @param newValue indicates the newly introduced value.
+     * 
+     * this method observe the username and password texts to manage the state of signIn button.
      */
     public void textChanged(ObservableValue observable, String oldValue, String newValue) {
         if (!txtPasswd.getText().trim().equals("") && !txtUserName.getText().trim().equals("")) {
@@ -121,6 +125,7 @@ public class SignInController {
         } else {
             btnSignIn.setDisable(true);
         }
+        // to check the limit of characters introduced in username and password fields.
         characterLimitArrived(txtPasswd, lblPasswdMax);
         characterLimitArrived(txtUserName, lblUserMax);
         LOGGER.info("Text changed");
@@ -129,18 +134,24 @@ public class SignInController {
     /**
      *
      * @param action
+     * Method that get the information from window and make a call to the interface Signable depending on the action. 
      */
     public void signIn(ActionEvent action) {
         LOGGER.info("User sent for signIn");
         try {
+            // User that will receive its details.
             User userSignedIn;
+            // User to send details for processing.
             user = new User();
             signableFactory = new SignableFactory();
             user.setLogin(txtUserName.getText());
             user.setPassword(txtPasswd.getText());
             signable = signableFactory.getSignableImplementation();
+            //user send to signableLogicImplementation and user recieved as userSignedIn with full details.
             userSignedIn = signable.signIn(user);
+            //Method to send signedIn user to signedIn window.
             sendUser(userSignedIn);
+            //Initialization of signedIn window.
             stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
         } catch (UserNotFoundException | IncorrectPasswordException | ConnectionRefusedException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
@@ -163,6 +174,7 @@ public class SignInController {
     /**
      *
      * @param action
+     * Method will initiate SignedUp window. 
      */
     public void signUp(ActionEvent action) {
         LOGGER.info("User sent for signUp");
@@ -181,8 +193,15 @@ public class SignInController {
         }
     }
 
+    /**
+     * Method to check the character limit of a textfield.
+     * @param textField, receives the textfield from textChanged method.
+     * @param label, receives the label from the textChanged method.
+     */
     private void characterLimitArrived(TextField textField, Label label) {
         LOGGER.info("character limit evaluation");
+        
+        //if textfield length is higher than 255 character, label will be visible to warn the user.
         if (textField.getText().length() > 255) {
             label.setVisible(true);
             btnSignIn.setDisable(true);
@@ -191,6 +210,7 @@ public class SignInController {
         }
     }
 
+   
     private void sendUser(User user) {
         LOGGER.info("User sent to show information in SignedInWindow");
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_SHOWING));

@@ -19,8 +19,9 @@ import view.SignInController;
  * @author Zeeshan Yaqoob
  */
 public class ApplicationSignInSignUp extends Application {
-    
-    private static final Logger LOGGER=Logger.getLogger("application.ApplicationSignInSignUp.class");
+
+    // Logger to record the events and trace out errors.
+    private static final Logger LOGGER = Logger.getLogger("application.ApplicationSignInSignUp.class");
 
     /**
      *
@@ -28,27 +29,26 @@ public class ApplicationSignInSignUp extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        
+
         LOGGER.info("App started");
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignInWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignInWindow.fxml"));
         try {
-            
-            Parent root= (Parent) loader.load();
-            SignInController  controller=loader.getController();
+
+            Parent root = (Parent) loader.load();
+            SignInController controller = loader.getController();
             controller.setStage(primaryStage);
             controller.initStage(root);
-           
+
         } catch (IOException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
     }
 
     /**
-     * @param this method creates an instance of application and run it.
+     * @param args this method creates an instance of application and run it.
      */
     public static void main(String[] args) {
         launch(args);
     }
-   
-    
+
 }

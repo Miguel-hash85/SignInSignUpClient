@@ -46,10 +46,12 @@ public class SignedInController {
     private MenuItem menuExit;
     private Stage stage;
     private User user;
+    
+    // Logger to record the events and trace out errors.
     private static final Logger LOGGER=Logger.getLogger("view.SignedInController");
     /**
      * Method that assign the value of the stage received to the class stage.
-     * @param stage 
+     * @param stage current window (SignedIn window).
      */
     public void setStage(Stage stage) {
         LOGGER.info("Stage set");
@@ -57,7 +59,7 @@ public class SignedInController {
     }
     /**
      * Method that receive a Parent and initialize the stage
-     * @param root 
+     * @param root the base class
      */
     public void initStage(Parent root){
         LOGGER.info("Stage initiated");
@@ -78,7 +80,7 @@ public class SignedInController {
     }
     /**
      * Method that assign the value of the user received to the class user.
-     * @param user 
+     * @param user object that is received.
      */
     public void setUser(User user) {
         this.user = user;
@@ -93,16 +95,14 @@ public class SignedInController {
         lblFullName.setText(user.getFullname());
     }
     /**
-     * Method that close the window.
-     * @param action 
+     * @param action that close the window.
      */
     public void close(ActionEvent action){
         LOGGER.info("Stage closed");
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
-    /**
-     * Method tha close this stage and opens the SignInWindow.
-     * @param action 
+    /** 
+     * @param action that close this stage and opens the SignInWindow.
      */
     public void logOut(ActionEvent action){
          LOGGER.info("Stage closed and signIn window opened");

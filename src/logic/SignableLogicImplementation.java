@@ -30,6 +30,7 @@ import view.SignUpController;
  */
 public class SignableLogicImplementation implements Signable {
 
+    // Logger to record the events and trace out errors.
     private static final Logger LOGGER = Logger.getLogger("logic.class");
 
     private ResourceBundle resourceBundle = ResourceBundle.getBundle("config.configuration");
@@ -43,10 +44,12 @@ public class SignableLogicImplementation implements Signable {
     /**
      * This method implements the User Sign Up
      *
-     * @param user. receives an user to send it to the server
-     * @throws Exception. This Method can throws Excptions.
-     * @throws UserAlreadyExistException, will be thrown When it gets a message from server that the user already exist.
-     * @throws ConnectionRefusedException, will be thrown when connection to server get refused.
+     * @param user. receives an user and encapsulate it with message SignUp and send it to the server
+     * @throws Exception  This Method can throws Exception
+     * @throws UserAlreadyExistException  will be thrown When it gets a message
+     * from server that the user already exist.
+     * @throws ConnectionRefusedException  will be thrown when connection to
+     * server get refused.
      */
     @Override
     public void signUp(User user) throws UserAlreadyExistException, ConnectionRefusedException, Exception {
@@ -57,10 +60,14 @@ public class SignableLogicImplementation implements Signable {
         try {
             host = resourceBundle.getString("SERVERHOST");
             port = Integer.valueOf(resourceBundle.getString("PORT"));
+            //Client request connection to server
             socket = new Socket(host, port);
+            //Input and output streams to the server established.
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            out.writeObject(data);
+            //Message sent to server.
+            out.writeObject(data); 
+            //Message received from the server
             data = (DataEncapsulation) in.readObject();
             switch (data.getMessage()) {
                 case CONNECTION_ERROR:
@@ -83,12 +90,12 @@ public class SignableLogicImplementation implements Signable {
     /**
      * This method implements the user Sign In
      *
-     * @param user
-     * @return
-     * @throws Exception
-     * @throws UserNotFoundException
-     * @throws IncorrectPasswordException
-     * @throws ConnectionRefusedException
+     * @param user, receives an user and encapsulate it with message SignIn and send to the server
+     * @return user that received from server
+     * @throws Exception This Method can throws Exception
+     * @throws UserNotFoundException will be thrown in case of user not found
+     * @throws IncorrectPasswordException will be thrown in case of password error
+     * @throws ConnectionRefusedException will be thrown in case of connection to the server is refused
      */
     @Override
     public User signIn(User user) throws Exception, UserNotFoundException, IncorrectPasswordException, ConnectionRefusedException {
@@ -99,10 +106,14 @@ public class SignableLogicImplementation implements Signable {
         try {
             host = resourceBundle.getString("SERVERHOST");
             port = Integer.valueOf(resourceBundle.getString("PORT"));
+            //Client request connection to server
             socket = new Socket(host, port);
+            //Input and output streams to the server established.
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
+            //Message sent to server.
             out.writeObject(data);
+            //Message received from the server
             data = (DataEncapsulation) in.readObject();
             switch (data.getMessage()) {
                 case INCORRECT_PASSWORD:

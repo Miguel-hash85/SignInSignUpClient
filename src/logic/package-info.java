@@ -4,6 +4,6 @@
  * and open the template in the editor.
  */
 /**
- * Package where classes logic of our client application would be created.
+ * Package where classes related to logic of application would be created.
  */
 package logic;
