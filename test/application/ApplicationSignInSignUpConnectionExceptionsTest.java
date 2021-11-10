@@ -21,11 +21,11 @@ import org.testfx.matcher.base.NodeMatchers;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
 /**
- * Class of tests to test if user already exist, wrong password or user not found.
+ *
  * @author Miguel Sánchez, Zeeshan Yaqoob, Aitor Ruiz de Gauna
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ApplicationSignInSignUpExceptionsTest extends ApplicationTest {
+public class ApplicationSignInSignUpConnectionExceptionsTest extends ApplicationTest {
     
 
     @BeforeClass
@@ -34,9 +34,7 @@ public class ApplicationSignInSignUpExceptionsTest extends ApplicationTest {
         FxToolkit.setupApplication(ApplicationSignInSignUp.class);
 
     }
-/**
- * Test to confirm that introduced user does not exist in database.
- */
+
     @Test
     public void test1UserNotFoundException() {
         doubleClickOn("#txtUserName");
@@ -51,9 +49,7 @@ public class ApplicationSignInSignUpExceptionsTest extends ApplicationTest {
         doubleClickOn("#txtPasswd");
         eraseText(1);
     }
-/**
- * Test to confirm that the introduced password is not correct for introduced user.
- */
+
     @Test
     public void test2IncorrectPasswordException(){
         doubleClickOn("#txtUserName");
@@ -68,11 +64,9 @@ public class ApplicationSignInSignUpExceptionsTest extends ApplicationTest {
         doubleClickOn("#txtPasswd");
         eraseText(1);
     }
-/**
- * Test to confirm that at the time of signUp introduced login already exist in database.
- */
+
     @Test
-    public void test3UserAlreadyExistException() {
+    public void test3UserAlreadyExistException() throws UserAlreadyExistException {
         clickOn("#signUpLink");
         verifyThat("#paneSignUp", isVisible());
         clickOn("#txtFullName");

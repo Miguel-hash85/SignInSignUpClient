@@ -20,11 +20,11 @@ import org.testfx.matcher.base.NodeMatchers;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
 /**
- * Class of tests to test connection with sever.
+ *
  * @author Miguel Sanchez, Aitor Ruiz de Gauna
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ApplicationSignInConnectionRefusedExceptionTest extends ApplicationTest {
+public class ApplicationSignInExceptionTest extends ApplicationTest {
 
     private TextField txtUserName;
     private PasswordField passwordField;
@@ -35,9 +35,7 @@ public class ApplicationSignInConnectionRefusedExceptionTest extends Application
         FxToolkit.setupApplication(ApplicationSignInSignUp.class);
 
     }
-    /**
-     *Test that will confirm when server is not online, connection get refused.
-     */
+    //Test that will confirm when server is not online, connection get refused
     @Test
     public void test1ConnectionRefusedException(){
         clickOn("#txtUserName");
@@ -47,9 +45,7 @@ public class ApplicationSignInConnectionRefusedExceptionTest extends Application
         clickOn("#btnSignIn");
         verifyThat(new ConnectionRefusedException().getMessage(), NodeMatchers.isVisible());
     }
-    /**
-     *Test that will confirm when server is not online, connection get refused.
-     */
+    //Test that will confirm when server is not online, connection get refused
     @Test
     public void test2ConnectionRefusedException(){
         clickOn("Aceptar");

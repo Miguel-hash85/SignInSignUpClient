@@ -22,8 +22,8 @@ import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
 
 /**
- * Class of tests to test signIn Window.
- * @author Miguel Sanchez, Aitor Ruiz de Gauna.
+ *
+ * @author 2dam
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ApplicationSignInTest extends ApplicationTest{
@@ -46,11 +46,9 @@ public class ApplicationSignInTest extends ApplicationTest{
         FxToolkit.setupApplication(ApplicationSignInSignUp.class);
         
     }
-    /**
-     * Test to confirm if the fields have more characters than permited limit, button signIn remains disabled.
-     */
+    
     @Test
-    public void test1SignInButtonIsNotEnabled() {
+    public void test1SignInButtonIsEnabled() {
         
         //check btnSignIn when password is empty
         txtUserName=lookup("#txtUserName").query();
@@ -86,9 +84,7 @@ public class ApplicationSignInTest extends ApplicationTest{
         eraseText(1);
 
     }
-/**
-     * Test to confirm that once the required fields are informed, signIn Button get enabled.
-     */
+
      @Test
     public void test2SignIn(){
         clickOn("#txtUserName");
@@ -99,9 +95,7 @@ public class ApplicationSignInTest extends ApplicationTest{
         clickOn("#btnSignIn");
         verifyThat("#panelSignedIn" , isVisible());
     }
-    /**
-     * Test to confirm logout navigate to signIn window.
-     */
+    
     @Test
     public void test3Logout(){
         clickOn("#menu");

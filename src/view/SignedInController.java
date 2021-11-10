@@ -23,10 +23,7 @@ import javafx.stage.WindowEvent;
 
 /**
  *
- * @author Aitor Ruiz de Gauna.
- */
-/**
- * Class signedInController which manages signedInWindow interactions.
+ * @author 2dam
  */
 public class SignedInController {
     //Label that is associated to the label 'lblEmail' of the SignedInWindow.fxml
@@ -98,7 +95,6 @@ public class SignedInController {
         lblFullName.setText(user.getFullname());
     }
     /**
-     * Method that close the signedIn window stage.
      * @param action that close the window.
      */
     public void close(ActionEvent action){
@@ -106,7 +102,6 @@ public class SignedInController {
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
     /** 
-     * Method that manage the client's logout request.
      * @param action that close this stage and opens the SignInWindow.
      */
     public void logOut(ActionEvent action){
