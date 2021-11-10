@@ -35,6 +35,9 @@ import logic.SignableFactory;
  *
  * @author Zeeshan Yaqoob
  */
+/**
+ * Class signInController which manages signInWindow interactions.
+ */
 public class SignInController {
 
     // Logger to record the events and trace out errors.
@@ -71,7 +74,7 @@ public class SignInController {
     private SignableFactory signableFactory;
 
     /**
-     *
+     * Method where the stage value is set.
      * @param primaryStage is principal window of application.
      */
     public void setStage(Stage primaryStage) {
@@ -80,7 +83,7 @@ public class SignInController {
     }
 
     /**
-     *
+     * Method where  the stage is initiated.
      * @param root base class
      * Scene is created, and defines the intial state of window.
      */
@@ -103,7 +106,7 @@ public class SignInController {
     }
 
     /**
-     *
+     * Method that close the stage.
      * @param action, to close the current window.
      */
     public void close(ActionEvent action) {
@@ -112,12 +115,12 @@ public class SignInController {
     }
 
     /**
-     *
+     * This method observe the username and password texts to manage the state of signIn button.
      * @param observable, object that has listener, being observed.
      * @param oldValue indicates the old value(could be default).
      * @param newValue indicates the newly introduced value.
      * 
-     * this method observe the username and password texts to manage the state of signIn button.
+     * 
      */
     public void textChanged(ObservableValue observable, String oldValue, String newValue) {
         if (!txtPasswd.getText().trim().equals("") && !txtUserName.getText().trim().equals("")) {
@@ -132,7 +135,7 @@ public class SignInController {
     }
 
     /**
-     *
+     * This method sends the values to the server for the signIn and opens the signedInWindow if it goes correctly.
      * @param action
      * Method that get the information from window and make a call to the interface Signable depending on the action. 
      */
@@ -172,7 +175,7 @@ public class SignInController {
     }
 
     /**
-     *
+     * This method open the signUpWindow.
      * @param action
      * Method will initiate SignedUp window. 
      */
@@ -201,7 +204,8 @@ public class SignInController {
     private void characterLimitArrived(TextField textField, Label label) {
         LOGGER.info("character limit evaluation");
         
-        //if textfield length is higher than 255 character, label will be visible to warn the user.
+        //if textfield length is higher than 255 character, label will be visible to warn the
+        // user by making label visible and button to signIn will get disabled.
         if (textField.getText().length() > 255) {
             label.setVisible(true);
             btnSignIn.setDisable(true);
@@ -210,7 +214,10 @@ public class SignInController {
         }
     }
 
-   
+    /**
+     * This method set the necessary parameters of the signedInControllers
+     * @param user this user is passed onto signedIn window to show his details.
+     */
     private void sendUser(User user) {
         LOGGER.info("User sent to show information in SignedInWindow");
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_SHOWING));

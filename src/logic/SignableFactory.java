@@ -12,13 +12,16 @@ import java.util.logging.Logger;
  *
  * @author Zeeshan Yaqoob
  */
+/**
+ * Class that generates implementations of the interface signable.
+ */
 public class SignableFactory {
 
     // Logger to record the events and trace out errors.
     private static final Logger LOGGER = Logger.getLogger("logic.class");
 
     /**
-     *
+     * This method return an instance of SignableImplementation.
      * @return This class returns an object of Signable logic implementation.
      */
     public Signable getSignableImplementation() {

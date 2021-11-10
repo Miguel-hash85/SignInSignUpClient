@@ -26,7 +26,10 @@ import view.SignUpController;
 
 /**
  *
- * @author Miguel Sánchez
+ * @author Miguel Sánchez,Aitor Ruiz de Gauna.
+ */
+/**
+ * Class that implements the interface signable and communicates with the server.
  */
 public class SignableLogicImplementation implements Signable {
 
@@ -42,8 +45,7 @@ public class SignableLogicImplementation implements Signable {
     private int port;
 
     /**
-     * This method implements the User Sign Up
-     *
+     * This method sends a signUp message to the server,and receives the answer of it.
      * @param user. receives an user and encapsulate it with message SignUp and send it to the server
      * @throws Exception  This Method can throws Exception
      * @throws UserAlreadyExistException  will be thrown When it gets a message
@@ -88,7 +90,7 @@ public class SignableLogicImplementation implements Signable {
     }
 
     /**
-     * This method implements the user Sign In
+     * This method sends a signIn message to the server,and receives the answer of it.
      *
      * @param user, receives an user and encapsulate it with message SignIn and send to the server
      * @return user that received from server

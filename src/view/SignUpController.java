@@ -32,7 +32,10 @@ import javafx.stage.WindowEvent;
 
 /**
  *
- * @author 2dam
+ * @author Aitor Ruiz de Gauna,Miguel Sanchez.
+ */
+/**
+ * Class signUpController which manages signUpWindow interactions.
  */
 public class SignUpController {
 
@@ -79,7 +82,7 @@ public class SignUpController {
     private static final Logger LOGGER = Logger.getLogger("view.SignUpController");
 
     /**
-     *
+     * This method iniciate the stage of signUpWindow.
      * @param root base class
      */
     public void initStage(Parent root) {
@@ -104,7 +107,7 @@ public class SignUpController {
     }
 
     /**
-     *
+     * This method returns an object of the interace Signable.
      * @return an object of interface Signable.
      */
     public Signable getSignable() {
@@ -112,7 +115,7 @@ public class SignUpController {
     }
 
     /**
-     *
+     * This method assign the value of the object signable.
      * @param signable, receives an object of interface Signable.
      */
     public void setSignable(Signable signable) {
@@ -120,7 +123,7 @@ public class SignUpController {
     }
 
     /**
-     *
+     * This method return an object of type User.
      * @return an object user,
      */
     public User getUser() {
@@ -128,7 +131,7 @@ public class SignUpController {
     }
 
     /**
-     *
+     * This method assign a value to the object user.
      * @param user, receives an object user.
      */
     public void setUser(User user) {
@@ -136,7 +139,7 @@ public class SignUpController {
     }
 
     /**
-     *
+     * This method assign a value to the stage object.
      * @param stage receives an object stage
      */
     public void setStage(Stage stage) {
@@ -144,7 +147,7 @@ public class SignUpController {
     }
 
     /**
-     *
+     * This method close the stage.
      * @param action if user prefer to signIn, that will close the current window.
      */
     public void signIn(ActionEvent action) {
@@ -153,7 +156,7 @@ public class SignUpController {
     }
 
     /**
-     *
+     * This method sends the values to the server for a signUp.
      * @param action once the user is signedUp without error current window will get closed.
      */
     public void signUp(ActionEvent action) {
@@ -181,7 +184,10 @@ public class SignUpController {
             alert.show();
         }
     }
-    //Method to validate the email and control that password and repeat would always be same.
+    /**
+     * Method to validate the email and control that password and repeat would always be same.
+     * @return a boolean to control if the validation has failed or not.
+     */
     private boolean validation() {
         boolean error=false;
         LOGGER.info("Validation of the email, password and repeatPassword");
@@ -213,7 +219,7 @@ public class SignUpController {
     }
 
     /**
-     *
+     * This method observe the username and password texts to manage the state of signUp button.
      * @param observable, object that has listener, being observed.
      * @param oldValue indicates the old value(could be default).
      * @param newValue indicates the newly introduced value.
@@ -234,7 +240,11 @@ public class SignUpController {
         characterLimitArrived(pswPassword.getText(), lblPasswordMax);
         characterLimitArrived(pswRepeatPassword.getText(), lblPasswordMax);
     }
-    //Method to check the character limit of a textfield.
+    /**
+     * Method to check the character limit of a textfield.
+     * @param string which has the value of the corresponding textField.
+     * @param label which has the corresponding label for the error message.
+     */
     private void characterLimitArrived(String string, Label label) {
         LOGGER.info("Validation of the length of fields");
         if (string.length() > 255) {
@@ -244,7 +254,9 @@ public class SignUpController {
             label.setVisible(false);
         }
     }
-    // Method to set assign details to an user.
+    /**
+     * Method to set assign details to an user. 
+     */
     private void setUserInfo() {
         LOGGER.info("User information set");
         user = new User();

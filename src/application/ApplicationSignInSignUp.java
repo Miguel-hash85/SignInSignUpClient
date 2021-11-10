@@ -18,13 +18,16 @@ import view.SignInController;
  *
  * @author Zeeshan Yaqoob
  */
+/**
+ * Class that iniciate the application.
+ */
 public class ApplicationSignInSignUp extends Application {
 
     // Logger to record the events and trace out errors.
     private static final Logger LOGGER = Logger.getLogger("application.ApplicationSignInSignUp.class");
 
     /**
-     *
+     * This method start the stage.
      * @param primaryStage creation of stage to load our window application.
      */
     @Override
@@ -45,6 +48,7 @@ public class ApplicationSignInSignUp extends Application {
     }
 
     /**
+     * This method launch the application.
      * @param args this method creates an instance of application and run it.
      */
     public static void main(String[] args) {

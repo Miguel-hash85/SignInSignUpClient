@@ -21,8 +21,8 @@ import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
 /**
- *
- * @author 2dam
+ * Class of test to test signUp.
+ * @author Aitor Ruiz de Gauna, Zeeshan Yaqoob.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ApplicationSignUpTest extends ApplicationTest {
@@ -46,7 +46,9 @@ public class ApplicationSignUpTest extends ApplicationTest {
         FxToolkit.setupApplication(ApplicationSignInSignUp.class);
 
     }
-
+/**
+ * Test to confirm the signUp.
+ */
     @Test
     public void test1SignUp() {
         clickOn("#signUpLink");
