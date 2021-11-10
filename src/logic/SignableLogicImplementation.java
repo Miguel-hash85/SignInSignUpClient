@@ -28,6 +28,10 @@ import view.SignUpController;
  *
  * @author Miguel Sánchez
  */
+/**
+ * Class that communicates with the server.
+ * @author Aitor
+ */
 public class SignableLogicImplementation implements Signable {
 
     // Logger to record the events and trace out errors.
@@ -42,7 +46,7 @@ public class SignableLogicImplementation implements Signable {
     private int port;
 
     /**
-     * This method implements the User Sign Up
+     * This method send a user to the server for a signUp and receives de anwser.
      *
      * @param user. receives an user and encapsulate it with message SignUp and send it to the server
      * @throws Exception  This Method can throws Exception
@@ -88,7 +92,7 @@ public class SignableLogicImplementation implements Signable {
     }
 
     /**
-     * This method implements the user Sign In
+     * This method send a user to the server for a signIn and receives de anwser.
      *
      * @param user, receives an user and encapsulate it with message SignIn and send to the server
      * @return user that received from server

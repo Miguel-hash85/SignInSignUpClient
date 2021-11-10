@@ -35,6 +35,10 @@ import logic.SignableFactory;
  *
  * @author Zeeshan Yaqoob
  */
+/**
+ * Class that manage the SignInWindow.
+ * @author Aitor
+ */
 public class SignInController {
 
     // Logger to record the events and trace out errors.
@@ -71,7 +75,7 @@ public class SignInController {
     private SignableFactory signableFactory;
 
     /**
-     *
+     * Method that set the value of the stage.
      * @param primaryStage is principal window of application.
      */
     public void setStage(Stage primaryStage) {
@@ -80,7 +84,7 @@ public class SignInController {
     }
 
     /**
-     *
+     * Method that iniciates the stage.
      * @param root base class
      * Scene is created, and defines the intial state of window.
      */
@@ -103,7 +107,7 @@ public class SignInController {
     }
 
     /**
-     *
+     * Method that closes the stage.
      * @param action, to close the current window.
      */
     public void close(ActionEvent action) {
@@ -112,12 +116,12 @@ public class SignInController {
     }
 
     /**
-     *
+     * This method observe the username and password texts to manage the state of signIn button.
      * @param observable, object that has listener, being observed.
      * @param oldValue indicates the old value(could be default).
      * @param newValue indicates the newly introduced value.
      * 
-     * this method observe the username and password texts to manage the state of signIn button.
+     * 
      */
     public void textChanged(ObservableValue observable, String oldValue, String newValue) {
         if (!txtPasswd.getText().trim().equals("") && !txtUserName.getText().trim().equals("")) {
@@ -132,9 +136,9 @@ public class SignInController {
     }
 
     /**
-     *
+     * Method that get the information from window and make a call to the interface Signable depending on the action.
      * @param action
-     * Method that get the information from window and make a call to the interface Signable depending on the action. 
+     *  
      */
     public void signIn(ActionEvent action) {
         LOGGER.info("User sent for signIn");
@@ -172,9 +176,9 @@ public class SignInController {
     }
 
     /**
-     *
-     * @param action
      * Method will initiate SignedUp window. 
+     * @param action
+     * 
      */
     public void signUp(ActionEvent action) {
         LOGGER.info("User sent for signUp");
@@ -210,7 +214,10 @@ public class SignInController {
         }
     }
 
-   
+   /**
+    * Method that send the required values to the signedInController
+    * @param user received from the server when accepts the petition to signIn.
+    */
     private void sendUser(User user) {
         LOGGER.info("User sent to show information in SignedInWindow");
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_SHOWING));

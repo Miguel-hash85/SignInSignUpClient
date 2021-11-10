@@ -35,7 +35,9 @@ public class ApplicationSignInExceptionTest extends ApplicationTest {
         FxToolkit.setupApplication(ApplicationSignInSignUp.class);
 
     }
-    //Test that will confirm when server is not online, connection get refused
+    /**
+     * Test that will confirm when server is not online, connection get refused
+     */
     @Test
     public void test1ConnectionRefusedException(){
         clickOn("#txtUserName");
@@ -45,7 +47,9 @@ public class ApplicationSignInExceptionTest extends ApplicationTest {
         clickOn("#btnSignIn");
         verifyThat(new ConnectionRefusedException().getMessage(), NodeMatchers.isVisible());
     }
-    //Test that will confirm when server is not online, connection get refused
+    /**
+     * Test that will confirm when server is not online, connection get refused
+     */
     @Test
     public void test2ConnectionRefusedException(){
         clickOn("Aceptar");

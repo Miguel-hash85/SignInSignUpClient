@@ -27,7 +27,6 @@ import static org.testfx.matcher.base.NodeMatchers.isVisible;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ApplicationSignInSignUpConnectionExceptionsTest extends ApplicationTest {
     
-
     @BeforeClass
     public static void setUpClass() throws TimeoutException {
         FxToolkit.registerPrimaryStage();
