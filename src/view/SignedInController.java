@@ -7,7 +7,6 @@ package view;
 
 import classes.User;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +24,9 @@ import javafx.stage.WindowEvent;
 /**
  *
  * @author 2dam
+ */
+/**
+ * Class that manage the signedInWindow.
  */
 public class SignedInController {
     //Label that is associated to the label 'lblEmail' of the SignedInWindow.fxml
@@ -47,18 +49,23 @@ public class SignedInController {
     private MenuItem menuExit;
     private Stage stage;
     private User user;
+    
+    // Logger to record the events and trace out errors.
+    private static final Logger LOGGER=Logger.getLogger("view.SignedInController");
     /**
      * Method that assign the value of the stage received to the class stage.
-     * @param stage 
+     * @param stage current window (SignedIn window).
      */
     public void setStage(Stage stage) {
+        LOGGER.info("Stage set");
         this.stage = stage;
     }
     /**
      * Method that receive a Parent and initialize the stage
-     * @param root 
+     * @param root the base class
      */
-    public void initStage(Parent root){   
+    public void initStage(Parent root){
+        LOGGER.info("Stage initiated");
         Scene scene=new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);
@@ -76,7 +83,7 @@ public class SignedInController {
     }
     /**
      * Method that assign the value of the user received to the class user.
-     * @param user 
+     * @param user object that is received.
      */
     public void setUser(User user) {
         this.user = user;
@@ -85,33 +92,35 @@ public class SignedInController {
      * Method that set the text of the labels.
      */
     public void setLabelText() {
+        LOGGER.info("Text of the labels established");
         lblEmail.setText(user.getEmail());
         lblLogin.setText(user.getLogin());
         lblFullName.setText(user.getFullname());
     }
     /**
-     * Method that close the window.
-     * @param action 
+     * Method that close the stage.
+     * @param action that close the window.
      */
     public void close(ActionEvent action){
+        LOGGER.info("Stage closed");
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
-    /**
-     * Method tha close this stage and opens the SignInWindow.
-     * @param action 
+    /** 
+     * Method that close the stage and open the signInWindow.
+     * @param action that close this stage and opens the SignInWindow.
      */
     public void logOut(ActionEvent action){
+         LOGGER.info("Stage closed and signIn window opened");
          stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
          FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignInWindow.fxml"));
          Stage stageSignIn=new Stage();
          try {
             Parent root = (Parent) loader.load();         
-            SignInController controller = loader.getController();
-            controller.setLabelText();
+            SignInController controller = loader.getController();    
             controller.setStage(stageSignIn);
             controller.initStage(root);
         } catch (IOException ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR,"ERROR WHILE LOGING OUT",ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.ERROR,"Unexpected Error Ocurred",ButtonType.OK);
             alert.show();
         }
     }
