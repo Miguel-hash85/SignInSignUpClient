@@ -55,6 +55,8 @@ public class SignableLogicImplementation implements Signable {
      * @throws ConnectionRefusedException  will be thrown when connection to
      * server get refused.
      */
+    
+    //method signUp, so there we need to send the message SIGNUP in the encapsulation class
     @Override
     public void signUp(User user) throws UserAlreadyExistException, ConnectionRefusedException, Exception {
         LOGGER.info("signUp petition sent");
@@ -62,6 +64,7 @@ public class SignableLogicImplementation implements Signable {
         data.setUser(user);
         data.setMessage(Message.SIGNUP);
         try {
+            //we get the configuration from config file
             host = resourceBundle.getString("SERVERHOST");
             port = Integer.valueOf(resourceBundle.getString("PORT"));
             //Client request connection to server
@@ -101,6 +104,8 @@ public class SignableLogicImplementation implements Signable {
      * @throws IncorrectPasswordException will be thrown in case of password error
      * @throws ConnectionRefusedException will be thrown in case of connection to the server is refused
      */
+    
+    //method signIn, so there we need to send the message SIGNIN in the encapsulation class
     @Override
     public User signIn(User user) throws Exception, UserNotFoundException, IncorrectPasswordException, ConnectionRefusedException {
         LOGGER.info("signIn petition sent");
@@ -108,6 +113,7 @@ public class SignableLogicImplementation implements Signable {
         data.setUser(user);
         data.setMessage(Message.SIGNIN);
         try {
+            //we get the configuration from config file
             host = resourceBundle.getString("SERVERHOST");
             port = Integer.valueOf(resourceBundle.getString("PORT"));
             //Client request connection to server

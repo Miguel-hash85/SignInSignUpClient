@@ -32,7 +32,7 @@ public class ApplicationSignInSignUp extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-
+         //Application start
         LOGGER.info("App started");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignInWindow.fxml"));
         try {

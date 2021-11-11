@@ -189,6 +189,7 @@ public class SignInController {
         try {
             Parent root = (Parent) loader.load();
             SignUpController controller = loader.getController();
+            //to get the implementation of signableFactory
             controller.setSignable(signableFactory.getSignableImplementation());
             controller.setStage(stageSignUp);
             controller.initStage(root);

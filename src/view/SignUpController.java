@@ -159,8 +159,11 @@ public class SignUpController {
      * Method that send an user to the server for a signUp and close the stage.
      * @param action once the user is signedUp without error current window will get closed.
      */
+    
+    //sign up event
     public void signUp(ActionEvent action) {
         LOGGER.info("User sent for signUp");
+        //the method validation returns a boolean needed to signUp or not
         try {
             if(!validation()){
                 setUserInfo();
@@ -174,9 +177,9 @@ public class SignUpController {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
             alert.show();
             if(ex instanceof UserAlreadyExistException){
-                txtLogin.requestFocus();
+                txtLogin.requestFocus();//focus returned to txtLogin
             }else{
-                txtFullName.requestFocus();
+                txtFullName.requestFocus();//focus returned to txtFullName
             }
             
         } catch (Exception ex) {
@@ -191,11 +194,11 @@ public class SignUpController {
     private boolean validation() {
         boolean error=false;
         LOGGER.info("Validation of the email, password and repeatPassword");
-        try {
+        try {//here we validate if the email matches with a patern
             if (!txtEmail.getText().matches("[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[A-Za-z]")) {
                 lblEmailMax.setText("Error,Email not valid!");
                 throw new Exception("Error,Email not valid!");
-            }
+            }//here we compare pswPassword and pswRepeatPassword
             if (!pswRepeatPassword.getText().equalsIgnoreCase(pswPassword.getText())) {
                 lblPasswordMax.setText("Error,Password does not match!");
                 throw new Exception("Error,Password does not match!");
@@ -203,6 +206,7 @@ public class SignUpController {
         } catch (Exception ex) {
             error=true;
             btnSignUp.setDisable(true);
+            //if we have an exception, we throw and take it here, where the messages are managed
             if (ex.getMessage().equalsIgnoreCase("Error,Email not valid!")) {
                 lblEmailMax.setVisible(true);
                 txtEmail.requestFocus();
@@ -225,6 +229,8 @@ public class SignUpController {
      * @param newValue indicates the newly introduced value.
      * 
      */
+    
+    //this method observes the text changes
     public void textChanged(ObservableValue observable, Object oldValue, Object newValue) {
         LOGGER.info("Analysis of the text field values");
         if (!txtEmail.getText().trim().equals("") && !txtFullName.getText().trim().equals("")

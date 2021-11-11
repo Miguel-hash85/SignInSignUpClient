@@ -5,12 +5,11 @@
  */
 package application;
 
-import exceptions.IncorrectPasswordException;
-import exceptions.UserAlreadyExistException;
-import exceptions.UserNotFoundException;
+import exceptions.ConnectionRefusedException;
 import java.util.concurrent.TimeoutException;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
@@ -22,50 +21,38 @@ import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
 /**
  *
- * @author Miguel Sánchez, Zeeshan Yaqoob, Aitor Ruiz de Gauna
+ * @author Miguel Sanchez, Aitor Ruiz de Gauna
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ApplicationSignInSignUpConnectionExceptionsTest extends ApplicationTest {
-    
+
+    private TextField txtUserName;
+    private PasswordField passwordField;
+
     @BeforeClass
     public static void setUpClass() throws TimeoutException {
         FxToolkit.registerPrimaryStage();
         FxToolkit.setupApplication(ApplicationSignInSignUp.class);
 
     }
-
+    /**
+     * Test that will confirm when server is not online, connection get refused
+     */
     @Test
-    public void test1UserNotFoundException() {
-        doubleClickOn("#txtUserName");
-        write("manolete");
+    public void test1ConnectionRefusedException(){
+        clickOn("#txtUserName");
+        write("a");
         clickOn("#txtPasswd");
         write("a");
         clickOn("#btnSignIn");
-        verifyThat(new UserNotFoundException().getMessage(), NodeMatchers.isVisible());
-        clickOn("Aceptar");
-        doubleClickOn("#txtUserName");
-        eraseText(1);
-        doubleClickOn("#txtPasswd");
-        eraseText(1);
+        verifyThat(new ConnectionRefusedException().getMessage(), NodeMatchers.isVisible());
     }
-
+    /**
+     * Test that will confirm when server is not online, connection get refused
+     */
     @Test
-    public void test2IncorrectPasswordException(){
-        doubleClickOn("#txtUserName");
-        write("Aitorrdg");
-        doubleClickOn("#txtPasswd");
-        write("a");
-        clickOn("#btnSignIn");
-        verifyThat(new IncorrectPasswordException().getMessage(), NodeMatchers.isVisible());
+    public void test2ConnectionRefusedException(){
         clickOn("Aceptar");
-        doubleClickOn("#txtUserName");
-        eraseText(1);
-        doubleClickOn("#txtPasswd");
-        eraseText(1);
-    }
-
-    @Test
-    public void test3UserAlreadyExistException() throws UserAlreadyExistException {
         clickOn("#signUpLink");
         verifyThat("#paneSignUp", isVisible());
         clickOn("#txtFullName");
@@ -73,13 +60,13 @@ public class ApplicationSignInSignUpConnectionExceptionsTest extends Application
         clickOn("#txtEmail");
         write("felipe@gmail.com");
         clickOn("#txtLogin");
-        write("a");
+        write("felipe13");
         clickOn("#pswPassword");
         write("abcd*1234");
         clickOn("#pswRepeatPassword");
         write("abcd*1234");
         clickOn("#btnSignUp");
-        verifyThat(new UserAlreadyExistException().getMessage(),NodeMatchers.isVisible());
-        clickOn("Aceptar");
+        verifyThat(new ConnectionRefusedException().getMessage(),NodeMatchers.isVisible());
     }
+
 }
