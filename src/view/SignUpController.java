@@ -296,11 +296,4 @@ public class SignUpController {
             label.setVisible(false);
         }
     }
-
-    /**
-     * Method to set assign details to an user.
-     */
-    private void setUserInfo() {
-
-    }
 }
