@@ -77,12 +77,13 @@ public class SignUpController {
     private User user;
     private DataEncapsulation data;
     private Signable signable;
-    
+
     // Logger to record the events and trace out errors.
     private static final Logger LOGGER = Logger.getLogger("view.SignUpController");
 
     /**
      * Method that iniciate the stage.
+     *
      * @param root base class
      */
     public void initStage(Parent root) {
@@ -91,6 +92,10 @@ public class SignUpController {
         Scene scene = new Scene(root);
         stage.setResizable(false);
         stage.setScene(scene);
+        txtFullName.requestFocus();
+        txtFullName.setPromptText("Insert name and surnames");
+        txtEmail.setPromptText("Insert email");
+        txtLogin.setPromptText("Insert username ");
         lblFullNameMax.setVisible(false);
         lblEmailMax.setVisible(false);
         lblLoginMax.setVisible(false);
@@ -108,6 +113,7 @@ public class SignUpController {
 
     /**
      * Method that return an object of the interface Signable.
+     *
      * @return an object of interface Signable.
      */
     public Signable getSignable() {
@@ -116,6 +122,7 @@ public class SignUpController {
 
     /**
      * Method that set a value for the Signable object.
+     *
      * @param signable, receives an object of interface Signable.
      */
     public void setSignable(Signable signable) {
@@ -124,6 +131,7 @@ public class SignUpController {
 
     /**
      * Method that return an User.
+     *
      * @return an object user,
      */
     public User getUser() {
@@ -132,6 +140,7 @@ public class SignUpController {
 
     /**
      * Method that set a value for the User.
+     *
      * @param user, receives an object user.
      */
     public void setUser(User user) {
@@ -140,6 +149,7 @@ public class SignUpController {
 
     /**
      * Method that set a value for the Stage.
+     *
      * @param stage receives an object stage
      */
     public void setStage(Stage stage) {
@@ -148,7 +158,9 @@ public class SignUpController {
 
     /**
      * Method that close this stage.
-     * @param action if user prefer to signIn, that will close the current window.
+     *
+     * @param action if user prefer to signIn, that will close the current
+     * window.
      */
     public void signIn(ActionEvent action) {
         LOGGER.info("Stage closed");
@@ -157,42 +169,62 @@ public class SignUpController {
 
     /**
      * Method that send an user to the server for a signUp and close the stage.
-     * @param action once the user is signedUp without error current window will get closed.
+     *
+     * @param action once the user is signedUp without error current window will
+     * get closed.
      */
-    
     //sign up event
     public void signUp(ActionEvent action) {
         LOGGER.info("User sent for signUp");
         //the method validation returns a boolean needed to signUp or not
         try {
-            if(!validation()){
-                setUserInfo();
-            signable.signUp(user);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Signed Up Correctly", ButtonType.OK);
-            alert.show();
-            stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+            if (!validation()) {
+                LOGGER.info("User information set");
+                //User values set.
+                user = new User();
+                user.setFullname(txtFullName.getText());
+                user.setEmail(txtEmail.getText());
+                user.setLogin(txtLogin.getText());
+                user.setPassword(pswPassword.getText());
+                user.setLastPasswordChange(LocalDateTime.now());
+                user.setPrivilege(UserPrivilege.USER);
+                user.setStatus(UserStatus.ENABLED);
+                //Going to the server to validate the user.
+                signable.signUp(user);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Signed Up Correctly", ButtonType.OK);
+                alert.show();
+                LOGGER.info("User signed up correctly");
+                stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
             }
-            
-        } catch (UserAlreadyExistException | ConnectionRefusedException ex) {
+
+        } catch (UserAlreadyExistException | ConnectionRefusedException ex) {   
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
             alert.show();
-            if(ex instanceof UserAlreadyExistException){
+            if (ex instanceof UserAlreadyExistException) {
+                LOGGER.info("UserAlreadyExistException catched and shown");
+                LOGGER.info("Focus in txtLogin");
                 txtLogin.requestFocus();//focus returned to txtLogin
-            }else{
+            } else {
+                LOGGER.info("ConnectionRefusedException catched and shown");
+                LOGGER.info("Focus in txtFullName");
                 txtFullName.requestFocus();//focus returned to txtFullName
             }
-            
+
         } catch (Exception ex) {
+            LOGGER.info("Unexpected Error message shown");
             Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);
             alert.show();
         }
     }
+
     /**
-     * Method to validate the email and control that password and repeat would always be same.
+     * Method to validate the email and control that password and repeat would
+     * always be same.
+     *
      * @return a boolean if the validation goes well or not.
      */
     private boolean validation() {
-        boolean error=false;
+        boolean error = false;
         LOGGER.info("Validation of the email, password and repeatPassword");
         try {//here we validate if the email matches with a patern
             if (!txtEmail.getText().matches("[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[A-Za-z]")) {
@@ -204,35 +236,37 @@ public class SignUpController {
                 throw new Exception("Error,Password does not match!");
             }
         } catch (Exception ex) {
-            error=true;
+            error = true;
             btnSignUp.setDisable(true);
             //if we have an exception, we throw and take it here, where the messages are managed
             if (ex.getMessage().equalsIgnoreCase("Error,Email not valid!")) {
+                LOGGER.info("Email not valid label visible");
                 lblEmailMax.setVisible(true);
                 txtEmail.requestFocus();
             } else if (ex.getMessage().equalsIgnoreCase("Error,Password does not match!")) {
+                LOGGER.info("Password does not match label visible");
                 lblPasswordMax.setVisible(true);
                 pswPassword.requestFocus();
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);
                 alert.show();
             }
-        }finally{
+        } finally {
             return error;
         }
     }
 
     /**
-     * This method observe the username and password texts to manage the state of signIn button.
+     * This method observe the username and password texts to manage the state
+     * of signIn button.
+     *
      * @param observable, object that has listener, being observed.
      * @param oldValue indicates the old value(could be default).
      * @param newValue indicates the newly introduced value.
-     * 
+     *
      */
-    
     //this method observes the text changes
     public void textChanged(ObservableValue observable, Object oldValue, Object newValue) {
-        LOGGER.info("Analysis of the text field values");
         if (!txtEmail.getText().trim().equals("") && !txtFullName.getText().trim().equals("")
                 && !txtLogin.getText().trim().equals("") && !pswPassword.getText().trim().equals("")
                 && !pswRepeatPassword.getText().trim().equals("")) {
@@ -246,32 +280,27 @@ public class SignUpController {
         characterLimitArrived(pswPassword.getText(), lblPasswordMax);
         characterLimitArrived(pswRepeatPassword.getText(), lblPasswordMax);
     }
+
     /**
      * Method to check the character limit of a textfield.
+     *
      * @param string that has the value of the corresponding textField.
      * @param label that is the corresponding label with the error message.
      */
     private void characterLimitArrived(String string, Label label) {
-        LOGGER.info("Validation of the length of fields");
         if (string.length() > 255) {
+            LOGGER.info("Character limit arrived in a field");
             label.setVisible(true);
             btnSignUp.setDisable(true);
         } else {
             label.setVisible(false);
         }
     }
+
     /**
      * Method to set assign details to an user.
      */
     private void setUserInfo() {
-        LOGGER.info("User information set");
-        user = new User();
-        user.setFullname(txtFullName.getText());
-        user.setEmail(txtEmail.getText());
-        user.setLogin(txtLogin.getText());
-        user.setPassword(pswPassword.getText());
-        user.setLastPasswordChange(LocalDateTime.now());
-        user.setPrivilege(UserPrivilege.USER);
-        user.setStatus(UserStatus.ENABLED);
+
     }
 }

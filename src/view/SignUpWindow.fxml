@@ -11,16 +11,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="paneSignUp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="960.0" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-color: black;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignUpController">
+<Pane fx:id="paneSignUp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="960.0" style="-fx-border-style: solid; -fx-border-color: black;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignUpController">
     <children>
-        <VBox layoutX="235.0" layoutY="132.0" prefHeight="450.0" prefWidth="508.0" style="-fx-background-color: gr;">
+        <VBox layoutX="235.0" layoutY="132.0" prefHeight="450.0" prefWidth="508.0">
             <children>
-                <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="608.0" prefWidth="508.0" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
+                <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="608.0" prefWidth="508.0" style=" -fx-border-style: solid; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
                     <children>
                         <Label layoutX="22.0" layoutY="11.0" text="PERSONAL INFO:" />
                         <Label layoutX="22.0" layoutY="183.0" text="SET USER:" />
                         <Button fx:id="btnSignUp" layoutX="405.0" layoutY="394.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="82.0" text="SignUP" />
-                        <Hyperlink fx:id="hypLogIn" layoutX="22.0" layoutY="392.0" prefHeight="23.0" prefWidth="127.0" text="I prefer to login">
+                        <Hyperlink fx:id="hypLogIn" layoutX="22.0" layoutY="392.0" prefHeight="23.0" prefWidth="327.0" text="I prefer to login">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>
