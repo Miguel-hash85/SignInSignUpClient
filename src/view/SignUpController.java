@@ -86,7 +86,6 @@ public class SignUpController {
      * @param root base class
      */
     public void initStage(Parent root) {
-        LOGGER.info("Stage initiated");
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(root);
         stage.setResizable(false);
@@ -99,10 +98,14 @@ public class SignUpController {
         hypLogIn.setOnAction(this::signIn);
         btnSignUp.setOnAction(this::signUp);
         txtFullName.textProperty().addListener(this::textChanged);
+        txtFullName.setPromptText("Name and surname");
         txtEmail.textProperty().addListener(this::textChanged);
-        txtLogin.textProperty().addListener(this::textChanged);
+        txtEmail.setPromptText("someone@example.com");
+        txtLogin.textProperty().addListener(this::textChanged); 
+        txtLogin.setPromptText("Login or alias");
         pswPassword.textProperty().addListener(this::textChanged);
         pswRepeatPassword.textProperty().addListener(this::textChanged);
+        txtFullName.requestFocus();
         stage.show();
     }
 
@@ -165,7 +168,15 @@ public class SignUpController {
         LOGGER.info("User sent for signUp");
         //the method validation returns a boolean needed to signUp or not
         try {
-            if(!validation()){
+            if (!txtEmail.getText().matches("[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[A-Za-z]")) {
+                lblEmailMax.setText("Error,Email not valid!");
+                throw new Exception("Error,Email not valid!");
+            }//here we compare pswPassword and pswRepeatPassword
+            else if (!pswRepeatPassword.getText().equalsIgnoreCase(pswPassword.getText())) {
+                lblPasswordMax.setText("Error,Password does not match!");
+                throw new Exception("Error,Password does not match!");
+            }
+            else{
                 setUserInfo();
             signable.signUp(user);
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Signed Up Correctly", ButtonType.OK);
@@ -177,51 +188,32 @@ public class SignUpController {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
             alert.show();
             if(ex instanceof UserAlreadyExistException){
+                LOGGER.info("UserAlreadyExists exception catch and show");
                 txtLogin.requestFocus();//focus returned to txtLogin
             }else{
+                LOGGER.info("ConectionRefusedException catch and show");
                 txtFullName.requestFocus();//focus returned to txtFullName
             }
             
         } catch (Exception ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);
-            alert.show();
-        }
-    }
-    /**
-     * Method to validate the email and control that password and repeat would always be same.
-     * @return a boolean if the validation goes well or not.
-     */
-    private boolean validation() {
-        boolean error=false;
-        LOGGER.info("Validation of the email, password and repeatPassword");
-        try {//here we validate if the email matches with a patern
-            if (!txtEmail.getText().matches("[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[A-Za-z]")) {
-                lblEmailMax.setText("Error,Email not valid!");
-                throw new Exception("Error,Email not valid!");
-            }//here we compare pswPassword and pswRepeatPassword
-            if (!pswRepeatPassword.getText().equalsIgnoreCase(pswPassword.getText())) {
-                lblPasswordMax.setText("Error,Password does not match!");
-                throw new Exception("Error,Password does not match!");
-            }
-        } catch (Exception ex) {
-            error=true;
             btnSignUp.setDisable(true);
-            //if we have an exception, we throw and take it here, where the messages are managed
             if (ex.getMessage().equalsIgnoreCase("Error,Email not valid!")) {
+                LOGGER.info("Email not valid message show");
                 lblEmailMax.setVisible(true);
                 txtEmail.requestFocus();
             } else if (ex.getMessage().equalsIgnoreCase("Error,Password does not match!")) {
+                LOGGER.info("IncorrectPasswordException exception catch and show");
                 lblPasswordMax.setVisible(true);
                 pswPassword.requestFocus();
             } else {
+                LOGGER.info("Unexpected error exception catch and show");
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);
                 alert.show();
             }
-        }finally{
-            return error;
+            
         }
     }
-
+    
     /**
      * This method observe the username and password texts to manage the state of signIn button.
      * @param observable, object that has listener, being observed.
@@ -232,7 +224,7 @@ public class SignUpController {
     
     //this method observes the text changes
     public void textChanged(ObservableValue observable, Object oldValue, Object newValue) {
-        LOGGER.info("Analysis of the text field values");
+        //LOGGER.info("Analysis of the text field values");
         if (!txtEmail.getText().trim().equals("") && !txtFullName.getText().trim().equals("")
                 && !txtLogin.getText().trim().equals("") && !pswPassword.getText().trim().equals("")
                 && !pswRepeatPassword.getText().trim().equals("")) {

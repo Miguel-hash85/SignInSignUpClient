@@ -7,8 +7,11 @@ package view;
 
 import classes.User;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -69,7 +72,23 @@ public class SignedInController {
         Scene scene=new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);
-        btnExit.setOnAction(this::close);
+        EventHandler<Event> eventHandler = new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setContentText("Are you sure that you want to leave this sesion?");
+                alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (alert.getResult() != ButtonType.YES) {
+                    event.consume();
+                } else {
+                    stage.close();
+                    LOGGER.info("Application closed");
+                }
+            }
+        };
+        btnExit.addEventFilter(ActionEvent.ACTION, eventHandler);
+        stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, eventHandler);
         menuExit.setOnAction(this::close);
         menuLogOut.setOnAction(this::logOut);
         stage.show();
