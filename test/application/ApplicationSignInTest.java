@@ -16,6 +16,7 @@ import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.api.FxToolkit;
+import org.testfx.matcher.base.NodeMatchers;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
@@ -101,5 +102,14 @@ public class ApplicationSignInTest extends ApplicationTest{
         clickOn("#menu");
         clickOn("#menuLogOut");       
         verifyThat("#signInPane" , isVisible());
-    }    
+    }
+    @Test
+    public void test4ExitButtonCheck(){
+        clickOn("#btnExit");
+        verifyThat("Are you sure", NodeMatchers.isVisible());
+        clickOn("No");
+        verifyThat("#signInPane" , isVisible());
+        clickOn("#btnExit");
+        clickOn("Yes");
+    }
 }

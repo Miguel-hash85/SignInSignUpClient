@@ -9,13 +9,14 @@ import classes.User;
 import exceptions.UserNotFoundException;
 import exceptions.ConnectionRefusedException;
 import exceptions.IncorrectPasswordException;
-import exceptions.UserAlreadyExistException;
 import interfaces.Signable;
 import java.io.IOException;
-import java.util.logging.Level;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,6 +28,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import logic.SignableFactory;
@@ -37,6 +39,7 @@ import logic.SignableFactory;
  */
 /**
  * Class that manage the SignInWindow.
+ *
  * @author Aitor
  */
 public class SignInController {
@@ -71,11 +74,12 @@ public class SignInController {
     private User user;
     // An object of interface to ge implementation
     private Signable signable;
-    // An object of signableFactory to call and recieve an object of signableLogicImplementation.
+    // private SignableFactory signableFactory;
     private SignableFactory signableFactory;
 
     /**
      * Method that set the value of the stage.
+     *
      * @param primaryStage is principal window of application.
      */
     public void setStage(Stage primaryStage) {
@@ -85,8 +89,9 @@ public class SignInController {
 
     /**
      * Method that iniciates the stage.
-     * @param root base class
-     * Scene is created, and defines the intial state of window.
+     *
+     * @param root base class Scene is created, and defines the intial state of
+     * window.
      */
     public void initStage(Parent root) {
         LOGGER.info("Stage initiated");
@@ -94,11 +99,35 @@ public class SignInController {
         stage.setScene(scene);
         stage.setTitle("SignIn");
         stage.setResizable(false);
+        signableFactory = new SignableFactory();
+        signable = signableFactory.getSignableImplementation();
+
+        EventHandler<Event> eventHandler = new EventHandler<Event>() {
+            @Override
+            public void handle(Event t) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setContentText("Are you sure");
+                alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (alert.getResult() != ButtonType.YES) {
+                    t.consume();
+                } else {
+                    stage.close();
+                    LOGGER.info("Application closed");
+                }
+            }
+        };
+
+        btnExit.addEventFilter(ActionEvent.ACTION, eventHandler);
+        stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, eventHandler);
         btnSignIn.setDisable(true);
-        btnExit.setOnAction(this::close);
         btnSignIn.setOnAction(this::signIn);
         txtUserName.textProperty().addListener(this::textChanged);
+        txtUserName.setPromptText("Introduce your username");
+        txtUserName.setTooltip(new Tooltip("Introduce your username"));
         txtPasswd.textProperty().addListener(this::textChanged);
+        txtPasswd.setPromptText("Introduce your password");
+        txtPasswd.setTooltip(new Tooltip("Introduce your password"));
         signUpLink.setOnAction(this::signUp);
         lblPasswdMax.setVisible(false);
         lblUserMax.setVisible(false);
@@ -107,21 +136,14 @@ public class SignInController {
     }
 
     /**
-     * Method that closes the stage.
-     * @param action, to close the current window.
-     */
-    public void close(ActionEvent action) {
-        stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
-        LOGGER.info("Stage closed");
-    }
-
-    /**
-     * This method observe the username and password texts to manage the state of signIn button.
+     * This method observe the username and password texts to manage the state
+     * of signIn button.
+     *
      * @param observable, object that has listener, being observed.
      * @param oldValue indicates the old value(could be default).
      * @param newValue indicates the newly introduced value.
-     * 
-     * 
+     *
+     *
      */
     public void textChanged(ObservableValue observable, String oldValue, String newValue) {
         if (!txtPasswd.getText().trim().equals("") && !txtUserName.getText().trim().equals("")) {
@@ -132,13 +154,15 @@ public class SignInController {
         // to check the limit of characters introduced in username and password fields.
         characterLimitArrived(txtPasswd, lblPasswdMax);
         characterLimitArrived(txtUserName, lblUserMax);
-        LOGGER.info("Text changed");
+        // LOGGER.info("Text changed");
     }
 
     /**
-     * Method that get the information from window and make a call to the interface Signable depending on the action.
-     * @param action
-     *  
+     * Method that get the information from window and make a call to the
+     * interface Signable depending on the action.
+     *
+     * @param action that controls the signIn action.
+     *
      */
     public void signIn(ActionEvent action) {
         LOGGER.info("User sent for signIn");
@@ -147,28 +171,34 @@ public class SignInController {
             User userSignedIn;
             // User to send details for processing.
             user = new User();
-            signableFactory = new SignableFactory();
             user.setLogin(txtUserName.getText());
             user.setPassword(txtPasswd.getText());
-            signable = signableFactory.getSignableImplementation();
             //user send to signableLogicImplementation and user recieved as userSignedIn with full details.
             userSignedIn = signable.signIn(user);
-            //Method to send signedIn user to signedIn window.
-            sendUser(userSignedIn);
+            LOGGER.info("User sent to show information in SignedInWindow");
+            stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_SHOWING));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignedInWindow.fxml"));
+            Stage stageSignIn = new Stage();
+            Parent root = (Parent) loader.load();
+            SignedInController controller = loader.getController();
+            controller.setUser(userSignedIn);
+            controller.setLabelText();
+            controller.setStage(stageSignIn);
+            controller.initStage(root);
             //Initialization of signedIn window.
-            stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+            stage.close();
         } catch (UserNotFoundException | IncorrectPasswordException | ConnectionRefusedException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
             alert.show();
-            if(ex instanceof UserNotFoundException){
+            if (ex instanceof UserNotFoundException) {
                 txtUserName.requestFocus();
-            }else if(ex instanceof IncorrectPasswordException){
+            } else if (ex instanceof IncorrectPasswordException) {
                 txtPasswd.requestFocus();
-            }else{
+            } else {
                 txtUserName.requestFocus();
             }
         } catch (Exception ex) {
-
+            LOGGER.info("Error while signing in");
             Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);
             alert.show();
         }
@@ -176,13 +206,14 @@ public class SignInController {
     }
 
     /**
-     * Method will initiate SignedUp window. 
-     * @param action
-     * 
+     * Method will initiate SignedUp window.
+     *
+     * @param action that controls that signUp action.
+     *
      */
     public void signUp(ActionEvent action) {
         LOGGER.info("User sent for signUp");
-        signableFactory = new SignableFactory();
+
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_SHOWING));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignUpWindow.fxml"));
         Stage stageSignUp = new Stage();
@@ -190,7 +221,7 @@ public class SignInController {
             Parent root = (Parent) loader.load();
             SignUpController controller = loader.getController();
             //to get the implementation of signableFactory
-            controller.setSignable(signableFactory.getSignableImplementation());
+            controller.setSignable(signable);
             controller.setStage(stageSignUp);
             controller.initStage(root);
         } catch (IOException ex) {
@@ -200,12 +231,11 @@ public class SignInController {
 
     /**
      * Method to check the character limit of a textfield.
+     *
      * @param textField, receives the textfield from textChanged method.
      * @param label, receives the label from the textChanged method.
      */
     private void characterLimitArrived(TextField textField, Label label) {
-        LOGGER.info("character limit evaluation");
-        
         //if textfield length is higher than 255 character, label will be visible to warn the user.
         if (textField.getText().length() > 255) {
             label.setVisible(true);
@@ -215,24 +245,4 @@ public class SignInController {
         }
     }
 
-   /**
-    * Method that send the required values to the signedInController
-    * @param user received from the server when accepts the petition to signIn.
-    */
-    private void sendUser(User user) {
-        LOGGER.info("User sent to show information in SignedInWindow");
-        stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_SHOWING));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignedInWindow.fxml"));
-        Stage stageSignIn = new Stage();
-        try {
-            Parent root = (Parent) loader.load();
-            SignedInController controller = loader.getController();
-            controller.setUser(user);
-            controller.setLabelText();
-            controller.setStage(stageSignIn);
-            controller.initStage(root);
-        } catch (IOException ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "ERROR WHILE SIGNING UP", ButtonType.OK);
-        }
-    }
 }
