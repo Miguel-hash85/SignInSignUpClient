@@ -17,6 +17,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -76,7 +77,7 @@ public class SignInController {
     private Signable signable;
     // private SignableFactory signableFactory;
     private SignableFactory signableFactory;
-
+   
     /**
      * Method that set the value of the stage.
      *
@@ -99,9 +100,11 @@ public class SignInController {
         stage.setScene(scene);
         stage.setTitle("SignIn");
         stage.setResizable(false);
+        //Initialization of SignableFactory.
         signableFactory = new SignableFactory();
+        //Getting an object of signableLogicImplementation from signable factory.
         signable = signableFactory.getSignableImplementation();
-
+        //Creating an event to handle window close request
         EventHandler<Event> eventHandler = new EventHandler<Event>() {
             @Override
             public void handle(Event t) {
@@ -117,22 +120,40 @@ public class SignInController {
                 }
             }
         };
-
+        //Closing window with created event by adding the filter to the exit button.
         btnExit.addEventFilter(ActionEvent.ACTION, eventHandler);
+        //Closing window with created event by adding the filter to the window default X button.
         stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, eventHandler);
         btnSignIn.setDisable(true);
         btnSignIn.setOnAction(this::signIn);
         txtUserName.textProperty().addListener(this::textChanged);
+        //Setting prompt text to the username text field.
         txtUserName.setPromptText("Introduce your username");
+        //Setting tool tip for the username text field.
         txtUserName.setTooltip(new Tooltip("Introduce your username"));
         txtPasswd.textProperty().addListener(this::textChanged);
+        //Setting prompt text to the password field.
         txtPasswd.setPromptText("Introduce your password");
+        //Setting toop tip for the password field.
         txtPasswd.setTooltip(new Tooltip("Introduce your password"));
         signUpLink.setOnAction(this::signUp);
         lblPasswdMax.setVisible(false);
         lblUserMax.setVisible(false);
         stage.show();
 
+    }
+
+    public void handle(Event t) {    
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("Are you sure");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (alert.getResult() != ButtonType.YES) {
+            t.consume();
+        } else {
+            stage.close();
+            LOGGER.info("Application closed");
+        }
     }
 
     /**
@@ -192,6 +213,7 @@ public class SignInController {
             alert.show();
             if (ex instanceof UserNotFoundException) {
                 txtUserName.requestFocus();
+                
             } else if (ex instanceof IncorrectPasswordException) {
                 txtPasswd.requestFocus();
             } else {
@@ -225,6 +247,7 @@ public class SignInController {
             controller.setStage(stageSignUp);
             controller.initStage(root);
         } catch (IOException ex) {
+            LOGGER.info("Error while opening signUp window");
             Alert alert = new Alert(Alert.AlertType.ERROR, "ERROR WHILE SIGNING UP", ButtonType.OK);
         }
     }
