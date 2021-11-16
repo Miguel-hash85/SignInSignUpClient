@@ -63,6 +63,7 @@ public class ApplicationSignUpTest extends ApplicationTest {
         write("abcd*1234");
         clickOn("#btnSignUp");
         verifyThat("Aceptar", NodeMatchers.isVisible());
+        verifyThat("Signed Up Correctly", NodeMatchers.isVisible());
         clickOn("Aceptar");
 
     }
