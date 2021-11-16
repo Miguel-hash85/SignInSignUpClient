@@ -5,6 +5,7 @@
  */
 package application;
 
+import exceptions.UserAlreadyExistException;
 import java.util.concurrent.TimeoutException;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -57,7 +58,7 @@ public class UserAlreadyExistsTest extends ApplicationTest{
         write("abcd*1234");
         clickOn("#btnSignUp");
         verifyThat("Aceptar", NodeMatchers.isVisible());
-        verifyThat("The username is already in use,try with another one", NodeMatchers.isVisible());
+        verifyThat(new UserAlreadyExistException().getMessage(), NodeMatchers.isVisible());
         clickOn("Aceptar");
     }
     
