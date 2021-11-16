@@ -134,7 +134,7 @@ public class SignInController {
         txtPasswd.textProperty().addListener(this::textChanged);
         //Setting prompt text to the password field.
         txtPasswd.setPromptText("Introduce your password");
-        //Setting toop tip for the password field.
+        //Setting toop tip for the password field
         txtPasswd.setTooltip(new Tooltip("Introduce your password"));
         signUpLink.setOnAction(this::signUp);
         lblPasswdMax.setVisible(false);
@@ -142,20 +142,6 @@ public class SignInController {
         stage.show();
 
     }
-
-    public void handle(Event t) {    
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("Are you sure");
-        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
-        Optional<ButtonType> result = alert.showAndWait();
-        if (alert.getResult() != ButtonType.YES) {
-            t.consume();
-        } else {
-            stage.close();
-            LOGGER.info("Application closed");
-        }
-    }
-
     /**
      * This method observe the username and password texts to manage the state
      * of signIn button.
