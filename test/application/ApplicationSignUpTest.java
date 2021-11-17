@@ -5,6 +5,7 @@
  */
 package application;
 
+import exceptions.UserAlreadyExistException;
 import java.util.concurrent.TimeoutException;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -62,9 +63,9 @@ public class ApplicationSignUpTest extends ApplicationTest {
         clickOn("#pswRepeatPassword");
         write("abcd*1234");
         clickOn("#btnSignUp");
-        verifyThat("Aceptar", NodeMatchers.isVisible());
+        verifyThat("Signed Up Correctly", NodeMatchers.isVisible());
         clickOn("Aceptar");
-
+        verifyThat("#signInPane", isVisible());
     }
 
     @Test
@@ -87,6 +88,18 @@ public class ApplicationSignUpTest extends ApplicationTest {
         clickOn("#pswRepeatPassword");
         write("z");
         verifyThat("#btnSignUp", isEnabled());
+        doubleClickOn("#txtFullName");
+        eraseText(1);
+        doubleClickOn("#txtEmail");
+        clickOn("#txtEmail");
+        eraseText(1);
+        doubleClickOn("#txtLogin");
+        eraseText(1);
+        doubleClickOn("#pswPassword");
+        eraseText(1);
+        doubleClickOn("#pswRepeatPassword");
+        eraseText(1);
+        verifyThat("#btnSignUp", isDisabled());
     }
 
     @Test
@@ -112,6 +125,31 @@ public class ApplicationSignUpTest extends ApplicationTest {
         verifyThat("#btnSignUp", isDisabled());
         pswRepeatPassword.setText(LIMIT_CHARACTERS);
         verifyThat("#btnSignUp", isDisabled());
+        doubleClickOn("#txtFullName");
+        eraseText(1);
+        doubleClickOn("#txtEmail");     
+        eraseText(1);
+        doubleClickOn("#txtLogin");
+        eraseText(1);
+        doubleClickOn("#pswPassword");
+        eraseText(1);
+        doubleClickOn("#pswRepeatPassword");
+        eraseText(1);
     }
-
+    @Test
+    public void test4UserAlreadyExistException() {
+        clickOn("#txtFullName");
+        write("Aitor Ruiz de Gauna");
+        clickOn("#txtEmail");
+        write("aitorruizdegauna@gmail.com");
+        clickOn("#txtLogin");
+        write("Aitorrdg");
+        clickOn("#pswPassword");
+        write("abcd*1234");
+        clickOn("#pswRepeatPassword");
+        write("abcd*1234");
+        clickOn("#btnSignUp");
+        verifyThat(new UserAlreadyExistException().getMessage(), NodeMatchers.isVisible());
+        clickOn("Aceptar");
+    }
 }
