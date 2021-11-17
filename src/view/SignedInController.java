@@ -32,6 +32,7 @@ import javafx.stage.WindowEvent;
  * Class that manage the signedInWindow.
  */
 public class SignedInController {
+
     //Label that is associated to the label 'lblEmail' of the SignedInWindow.fxml
     @FXML
     private Label lblEmail;
@@ -52,61 +53,55 @@ public class SignedInController {
     private MenuItem menuExit;
     private Stage stage;
     private User user;
-    
+
     // Logger to record the events and trace out errors.
-    private static final Logger LOGGER=Logger.getLogger("view.SignedInController");
+    private static final Logger LOGGER = Logger.getLogger("view.SignedInController");
+
     /**
      * Method that assign the value of the stage received to the class stage.
+     *
      * @param stage current window (SignedIn window).
      */
     public void setStage(Stage stage) {
         LOGGER.info("Stage set");
         this.stage = stage;
     }
+
     /**
      * Method that receive a Parent and initialize the stage
+     *
      * @param root the base class
      */
-    public void initStage(Parent root){
+    public void initStage(Parent root) {
         LOGGER.info("Stage initiated");
-        Scene scene=new Scene(root);
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);
-        EventHandler<Event> eventHandler = new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setContentText("Are you sure that you want to leave this sesion?");
-                alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
-                Optional<ButtonType> result = alert.showAndWait();
-                if (alert.getResult() != ButtonType.YES) {
-                    event.consume();
-                } else {
-                    stage.close();
-                    LOGGER.info("Application closed");
-                }
-            }
-        };
-        btnExit.addEventFilter(ActionEvent.ACTION, eventHandler);
-        stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, eventHandler);
+        btnExit.addEventHandler(ActionEvent.ACTION, this::eventHandler);
+        stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::eventHandler);
         menuExit.setOnAction(this::close);
         menuLogOut.setOnAction(this::logOut);
         stage.show();
     }
+
     /**
      * Method that return the value of the user.
+     *
      * @return User
      */
     public User getUser() {
         return user;
     }
+
     /**
      * Method that assign the value of the user received to the class user.
+     *
      * @param user object that is received.
      */
     public void setUser(User user) {
         this.user = user;
     }
+
     /**
      * Method that set the text of the labels.
      */
@@ -116,31 +111,48 @@ public class SignedInController {
         lblLogin.setText(user.getLogin());
         lblFullName.setText(user.getFullname());
     }
+
     /**
      * Method that close the stage.
+     *
      * @param action that close the window.
      */
-    public void close(ActionEvent action){
+    public void close(ActionEvent action) {
         LOGGER.info("Stage closed");
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
-    /** 
+
+    /**
      * Method that close the stage and open the signInWindow.
+     *
      * @param action that close this stage and opens the SignInWindow.
      */
-    public void logOut(ActionEvent action){
-         LOGGER.info("Stage closed and signIn window opened");
-         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
-         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignInWindow.fxml"));
-         Stage stageSignIn=new Stage();
-         try {
-            Parent root = (Parent) loader.load();         
-            SignInController controller = loader.getController();    
+    public void logOut(ActionEvent action) {
+        LOGGER.info("Stage closed and signIn window opened");
+        stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignInWindow.fxml"));
+        Stage stageSignIn = new Stage();
+        try {
+            Parent root = (Parent) loader.load();
+            SignInController controller = loader.getController();
             controller.setStage(stageSignIn);
             controller.initStage(root);
         } catch (IOException ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR,"Unexpected Error Ocurred",ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);
             alert.show();
+        }
+    }
+
+    public void eventHandler(Event event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("Are you sure that you want to leave this sesion?");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (alert.getResult() != ButtonType.YES) {
+            event.consume();
+        } else {
+            stage.close();
+            LOGGER.info("Application closed");
         }
     }
 }
