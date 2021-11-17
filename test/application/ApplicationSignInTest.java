@@ -106,7 +106,7 @@ public class ApplicationSignInTest extends ApplicationTest{
     @Test
     public void test4ExitButtonCheck(){
         clickOn("#btnExit");
-        verifyThat("Are you sure", NodeMatchers.isVisible());
+        verifyThat("Are you sure?", NodeMatchers.isVisible());
         clickOn("No");
         verifyThat("#signInPane" , isVisible());
         clickOn("#btnExit");

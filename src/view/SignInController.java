@@ -109,29 +109,36 @@ public class SignInController {
         stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, this::eventHandler);
 
         btnSignIn.setDisable(true);
+        //Assigning an action to the signIn button
         btnSignIn.setOnAction(this::signIn);
+        //Adding a listener to text property of username text field
+        
         txtUserName.textProperty().addListener(this::textChanged);
         //Setting prompt text to the username text field.
         txtUserName.setPromptText("Introduce your username");
         //Setting tool tip for the username text field.
         txtUserName.setTooltip(new Tooltip("Introduce your username"));
+        
+        //Adding a listener to text property of password field
         txtPasswd.textProperty().addListener(this::textChanged);
         //Setting prompt text to the password field.
         txtPasswd.setPromptText("Introduce your password");
         //Setting toop tip for the password field
         txtPasswd.setTooltip(new Tooltip("Introduce your password"));
+        
+        //Assigning an action to the sign up hyper link
         signUpLink.setOnAction(this::signUp);
+        
+        //making labels invisible
         lblPasswdMax.setVisible(false);
         lblUserMax.setVisible(false);
+        
         stage.show();
-
     }
-
+    //Creating an event to handle window close request.
     public void eventHandler(Event t) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("Are you sure");
-        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
-        Optional<ButtonType> result = alert.showAndWait();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure?",ButtonType.YES,ButtonType.NO);
+        alert.showAndWait();
         if (alert.getResult() != ButtonType.YES) {
             t.consume();
         } else {
@@ -219,14 +226,14 @@ public class SignInController {
      */
     public void signUp(ActionEvent action) {
         LOGGER.info("User sent for signUp");
-
+        //Initilization of signUp window
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_SHOWING));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignUpWindow.fxml"));
         Stage stageSignUp = new Stage();
         try {
             Parent root = (Parent) loader.load();
             SignUpController controller = loader.getController();
-            //to get the implementation of signableFactory
+            //to set the implementation of signableFactory
             controller.setSignable(signable);
             controller.setStage(stageSignUp);
             controller.initStage(root);
