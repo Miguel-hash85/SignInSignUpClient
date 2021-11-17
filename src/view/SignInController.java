@@ -17,7 +17,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -77,7 +76,7 @@ public class SignInController {
     private Signable signable;
     // private SignableFactory signableFactory;
     private SignableFactory signableFactory;
-   
+
     /**
      * Method that set the value of the stage.
      *
@@ -104,26 +103,11 @@ public class SignInController {
         signableFactory = new SignableFactory();
         //Getting an object of signableLogicImplementation from signable factory.
         signable = signableFactory.getSignableImplementation();
-        //Creating an event to handle window close request
-        EventHandler<Event> eventHandler = new EventHandler<Event>() {
-            @Override
-            public void handle(Event t) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setContentText("Are you sure");
-                alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
-                Optional<ButtonType> result = alert.showAndWait();
-                if (alert.getResult() != ButtonType.YES) {
-                    t.consume();
-                } else {
-                    stage.close();
-                    LOGGER.info("Application closed");
-                }
-            }
-        };
         //Closing window with created event by adding the filter to the exit button.
-        btnExit.addEventFilter(ActionEvent.ACTION, eventHandler);
+        btnExit.addEventHandler(ActionEvent.ACTION, this::eventHandler);
         //Closing window with created event by adding the filter to the window default X button.
-        stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, eventHandler);
+        stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, this::eventHandler);
+
         btnSignIn.setDisable(true);
         btnSignIn.setOnAction(this::signIn);
         txtUserName.textProperty().addListener(this::textChanged);
@@ -142,6 +126,20 @@ public class SignInController {
         stage.show();
 
     }
+
+    public void eventHandler(Event t) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("Are you sure");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (alert.getResult() != ButtonType.YES) {
+            t.consume();
+        } else {
+            stage.close();
+            LOGGER.info("Application closed");
+        }
+    }
+
     /**
      * This method observe the username and password texts to manage the state
      * of signIn button.
@@ -199,7 +197,7 @@ public class SignInController {
             alert.show();
             if (ex instanceof UserNotFoundException) {
                 txtUserName.requestFocus();
-                
+
             } else if (ex instanceof IncorrectPasswordException) {
                 txtPasswd.requestFocus();
             } else {
