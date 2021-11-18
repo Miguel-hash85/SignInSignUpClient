@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import org.junit.Test;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
@@ -67,7 +68,7 @@ public class ApplicationSignUpTest extends ApplicationTest {
         clickOn("Aceptar");
         verifyThat("#signInPane", isVisible());
     }
-
+    @Ignore
     @Test
     public void test2ButtonSignUpDisabled() {
 
@@ -101,7 +102,7 @@ public class ApplicationSignUpTest extends ApplicationTest {
         eraseText(1);
         verifyThat("#btnSignUp", isDisabled());
     }
-
+    @Ignore
     @Test
     public void test3MaxCharacterReached() {
         txtFullName = lookup("#txtFullName").query();
@@ -137,7 +138,9 @@ public class ApplicationSignUpTest extends ApplicationTest {
         eraseText(1);
     }
     @Test
-    public void test4UserAlreadyExistException() {
+    public void test4UserAlreadyExistException() {    
+         clickOn("#signUpLink");
+        verifyThat("#paneSignUp", isVisible());
         clickOn("#txtFullName");
         write("Aitor Ruiz de Gauna");
         clickOn("#txtEmail");

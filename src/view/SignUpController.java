@@ -178,8 +178,7 @@ public class SignUpController {
         LOGGER.info("User sent for signUp");
         //the method validation returns a boolean needed to signUp or not
         try {
-            if (!validation()) {
-                LOGGER.info("User information set");
+            if (!validation()) {              
                 //User values set.
                 user = new User();
                 user.setFullname(txtFullName.getText());
@@ -201,17 +200,17 @@ public class SignUpController {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
             alert.show();
             if (ex instanceof UserAlreadyExistException) {
-                LOGGER.info("UserAlreadyExistException catched and shown");
+                LOGGER.warning("UserAlreadyExistException catched and shown");
                 LOGGER.info("Focus in txtLogin");
                 txtLogin.requestFocus();//focus returned to txtLogin
             } else {
-                LOGGER.info("ConnectionRefusedException catched and shown");
+                LOGGER.warning("ConnectionRefusedException catched and shown");
                 LOGGER.info("Focus in txtFullName");
                 txtFullName.requestFocus();//focus returned to txtFullName
             }
 
         } catch (Exception ex) {
-            LOGGER.info("Unexpected Error message shown");
+            LOGGER.warning("Unexpected Error message shown");
             Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);
             alert.show();
         }
@@ -240,11 +239,11 @@ public class SignUpController {
             btnSignUp.setDisable(true);
             //if we have an exception, we throw and take it here, where the messages are managed
             if (ex.getMessage().equalsIgnoreCase("Error,Email not valid!")) {
-                LOGGER.info("Email not valid label visible");
+                LOGGER.warning("Email not valid label visible");
                 lblEmailMax.setVisible(true);
                 txtEmail.requestFocus();
             } else if (ex.getMessage().equalsIgnoreCase("Error,Password does not match!")) {
-                LOGGER.info("Password does not match label visible");
+                LOGGER.warning("Password does not match label visible");
                 lblPasswordMax.setVisible(true);
                 pswPassword.requestFocus();
             } else {
@@ -289,7 +288,7 @@ public class SignUpController {
      */
     private void characterLimitArrived(String string, Label label) {
         if (string.length() > 255) {
-            LOGGER.info("Character limit arrived in a field");
+            LOGGER.warning("Character limit arrived in a field");
             label.setVisible(true);
             btnSignUp.setDisable(true);
         } else {
