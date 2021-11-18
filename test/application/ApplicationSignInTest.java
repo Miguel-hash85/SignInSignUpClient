@@ -6,12 +6,15 @@
 package application;
 
 
+import exceptions.IncorrectPasswordException;
+import exceptions.UserNotFoundException;
 import java.util.concurrent.TimeoutException;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.junit.Test;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
@@ -20,6 +23,7 @@ import org.testfx.matcher.base.NodeMatchers;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
+
 
 
 /**
@@ -47,7 +51,7 @@ public class ApplicationSignInTest extends ApplicationTest{
         FxToolkit.setupApplication(ApplicationSignInSignUp.class);
         
     }
-    
+    @Ignore
     @Test
     public void test1SignInButtonIsEnabled() {
         
@@ -96,13 +100,44 @@ public class ApplicationSignInTest extends ApplicationTest{
         clickOn("#btnSignIn");
         verifyThat("#panelSignedIn" , isVisible());
     }
+      @Test
+    public void test1UserNotFoundException() {
+        doubleClickOn("#txtUserName");
+        write("manolete");
+        clickOn("#txtPasswd");
+        write("a");
+        clickOn("#btnSignIn");
+        verifyThat(new UserNotFoundException().getMessage(), NodeMatchers.isVisible());
+        clickOn("OK");
+        doubleClickOn("#txtUserName");
+        eraseText(1);
+        doubleClickOn("#txtPasswd");
+        eraseText(1);
+      
+    }
     
+    @Test
+    public void test2IncorrectPasswordException(){
+        doubleClickOn("#txtUserName");
+        write("Aitorrdg");
+        doubleClickOn("#txtPasswd");
+        write("a");
+        clickOn("#btnSignIn");
+        verifyThat(new IncorrectPasswordException().getMessage(), NodeMatchers.isVisible());
+        clickOn("OK");
+        doubleClickOn("#txtUserName");
+        eraseText(1);
+        doubleClickOn("#txtPasswd");
+        eraseText(1);
+    }
+    @Ignore
     @Test
     public void test3Logout(){
         clickOn("#menu");
         clickOn("#menuLogOut");       
         verifyThat("#signInPane" , isVisible());
     }
+    @Ignore
     @Test
     public void test4ExitButtonCheck(){
         clickOn("#btnExit");

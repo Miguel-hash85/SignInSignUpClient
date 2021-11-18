@@ -204,14 +204,15 @@ public class SignInController {
             alert.show();
             if (ex instanceof UserNotFoundException) {
                 txtUserName.requestFocus();
-
+                LOGGER.warning("User not found");
             } else if (ex instanceof IncorrectPasswordException) {
                 txtPasswd.requestFocus();
+                LOGGER.warning("Password error");
             } else {
                 txtUserName.requestFocus();
             }
         } catch (Exception ex) {
-            LOGGER.info("Error while signing in");
+            LOGGER.warning("Error while signing in");
             Alert alert = new Alert(Alert.AlertType.ERROR, "Unexpected Error Ocurred", ButtonType.OK);
             alert.show();
         }
@@ -238,7 +239,7 @@ public class SignInController {
             controller.setStage(stageSignUp);
             controller.initStage(root);
         } catch (IOException ex) {
-            LOGGER.info("Error while opening signUp window");
+            LOGGER.warning("Error while opening signUp window");
             Alert alert = new Alert(Alert.AlertType.ERROR, "ERROR WHILE SIGNING UP", ButtonType.OK);
         }
     }
